@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "title": "Nuevo Producto0",
+    "description": "Descripción del nuevo producto0",
+    "price": 200,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P000",
+    "stock": 20
+  },
+  {
+    "id": 2,
+    "title": "Nuevo Producto1",
+    "description": "Descripción del nuevo producto1",
+    "price": 300,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P001",
+    "stock": 20
+  },
+  {
+    "id": 3,
+    "title": "Nuevo Producto2",
+    "description": "Descripción del nuevo producto2",
+    "price": 500,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P002",
+    "stock": 20
+  },
+  {
+    "id": 4,
+    "title": "Nuevo Producto3",
+    "description": "Descripción del nuevo producto3",
+    "price": 600,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P003",
+    "stock": 20
+  },
+  {
+    "id": 5,
+    "title": "Nuevo Producto4",
+    "description": "Descripción del nuevo producto4",
+    "price": 500,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P004",
+    "stock": 20
+  },
+  {
+    "id": 6,
+    "title": "Nuevo Producto5",
+    "description": "Descripción del nuevo producto5",
+    "price": 400,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P005",
+    "stock": 20
+  },
+  {
+    "id": 7,
+    "title": "Nuevo Producto6",
+    "description": "Descripción del nuevo producto6",
+    "price": 200,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P006",
+    "stock": 20
+  },
+  {
+    "id": 8,
+    "title": "Nuevo Producto7",
+    "description": "Descripción del nuevo producto7",
+    "price": 100,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P007",
+    "stock": 20
+  },
+  {
+    "id": 9,
+    "title": "Nuevo Producto8",
+    "description": "Descripción del nuevo producto8",
+    "price": 500,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P008",
+    "stock": 20
+  },
+  {
+    "id": 10,
+    "title": "Nuevo Producto9",
+    "description": "Descripción del nuevo producto9",
+    "price": 500,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P009",
+    "stock": 20
+  },
+  {
+    "id": 11,
+    "title": "Nuevo Producto10",
+    "description": "Descripción del nuevo producto10",
+    "price": 500,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P010",
+    "stock": 20
+  }
+]
