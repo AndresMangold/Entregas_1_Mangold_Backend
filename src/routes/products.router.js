@@ -5,6 +5,7 @@ const router = Router();
 
 const productManager = new ProductManager(`${__dirname}/../assets/products.json`);
 
+
 productManager.init().catch(error => {
     console.error('Error al inicializar ProductManager:', error);
 });
