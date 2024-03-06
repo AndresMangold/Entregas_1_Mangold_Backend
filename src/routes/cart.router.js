@@ -19,15 +19,10 @@ router.post('/', async (req, res) => {
 router.get('/:cid', async (req, res) => {
     try {
         const cartId = parseInt(req.params.cid);
-        const cart = await cartManager.getCart(cartId);
-        if (cart) {
-            res.json(cart);
-        } else {
-            res.status(404).send('Carrito no encontrado');
-        }
+        const cart = await cartManager.getCartById(cartId);
+        res.json(cart);
     } catch (error) {
-        console.error('Error al obtener el carrito:', error);
-        res.status(500).send('Error interno del servidor');
+        res.status(500).json({ error: error.message });
     }
 });
 
