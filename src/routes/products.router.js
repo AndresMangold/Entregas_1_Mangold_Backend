@@ -3,7 +3,8 @@ const ProductManager = require('../productManager');
 
 const router = Router();
 
-const productManager = new ProductManager(`${__dirname}/../assets/products.json`);
+const productManager = new ProductManager(`${__dirname}/../../assets/products.json`);
+
 
 
 productManager.init().catch(error => {

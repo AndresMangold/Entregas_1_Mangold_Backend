@@ -83,25 +83,4 @@ class ProductManager {
     }
 }
 
-if (require.main === module) {
-    (async () => {
-        const productManager = new ProductManager(`${__dirname}/../assets/products.json`);
-
-        await Promise.all([
-            productManager.addProduct("Nuevo Producto0", "Descripción del nuevo producto0", 200, "imagen_nuevo_producto.jpg", "P000", 20),
-            productManager.addProduct("Nuevo Producto1", "Descripción del nuevo producto1", 300, "imagen_nuevo_producto.jpg", "P001", 20),
-            productManager.addProduct("Nuevo Producto2", "Descripción del nuevo producto2", 500, "imagen_nuevo_producto.jpg", "P002", 20),
-            productManager.addProduct("Nuevo Producto3", "Descripción del nuevo producto3", 600, "imagen_nuevo_producto.jpg", "P003", 20),
-            productManager.addProduct("Nuevo Producto4", "Descripción del nuevo producto4", 500, "imagen_nuevo_producto.jpg", "P004", 20),
-            productManager.addProduct("Nuevo Producto5", "Descripción del nuevo producto5", 400, "imagen_nuevo_producto.jpg", "P005", 20),
-            productManager.addProduct("Nuevo Producto6", "Descripción del nuevo producto6", 200, "imagen_nuevo_producto.jpg", "P006", 20),
-            productManager.addProduct("Nuevo Producto7", "Descripción del nuevo producto7", 100, "imagen_nuevo_producto.jpg", "P007", 20),
-            productManager.addProduct("Nuevo Producto8", "Descripción del nuevo producto8", 500, "imagen_nuevo_producto.jpg", "P008", 20),
-            productManager.addProduct("Nuevo Producto9", "Descripción del nuevo producto9", 500, "imagen_nuevo_producto.jpg", "P009", 20),
-            productManager.addProduct("Nuevo Producto10", "Descripción del nuevo producto10", 500, "imagen_nuevo_producto.jpg", "P010", 20),
-        ]);
-
-    })();
-}
-
 module.exports = ProductManager;
