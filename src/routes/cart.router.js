@@ -1,8 +1,10 @@
 const { Router } = require('express');
 const CartManager = require('../cartManager');
+const ProductManager = require('../productManager');
 
 const router = Router();
 const cartManager = new CartManager(`${__dirname}/../../assets/cart.json`);
+const productManager = new ProductManager(`${__dirname}/../../assets/products.json`);
 
 router.post('/', async (req, res) => {
     try {
@@ -33,7 +35,11 @@ router.post('/:cid/product/:pid', async (req, res) => {
     try {
         const cartId = parseInt(req.params.cid);
         const productId = parseInt(req.params.pid);
-        const quantity = req.body.quantity;
+        const quantity = parseInt(req.body.quantity); 
+        const product = await productManager.getProductById(productId); 
+        if (!product) {
+            return res.status(404).send('Producto no encontrado');
+        }
         const success = await cartManager.addProductToCart(cartId, productId, quantity);
         if (success) {
             res.json({ message: 'Producto agregado al carrito correctamente' });

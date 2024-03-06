@@ -76,6 +76,23 @@ class ProductManager {
         }
         return false;
     }
+    
+    updateStock(productId, quantity) {
+        const product = this.getProductById(productId);
+        if (product) {
+            if (product.stock >= quantity) {
+                product.stock -= quantity;
+                this.updateProduct(productId, { stock: product.stock });
+                return true;
+            } else {
+                console.error('No hay suficiente stock disponible');
+                return false;
+            }
+        } else {
+            console.error('Producto no encontrado');
+            return false;
+        }
+    }
 
     deleteProduct(id) {
         this.products = this.products.filter(product => product.id !== id);
