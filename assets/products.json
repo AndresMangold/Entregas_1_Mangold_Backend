@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "Nuevo Producto0",
-    "description": "Descripción del nuevo producto0",
+    "description": "Esta es una descripción modificada con put",
     "price": 200,
     "thumbnail": "imagen_nuevo_producto.jpg",
     "code": "P000",
