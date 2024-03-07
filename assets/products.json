@@ -97,5 +97,14 @@
     "thumbnail": "imagen_nuevo_producto.jpg",
     "code": "P010",
     "stock": 20
+  },
+  {
+    "id": 12,
+    "title": "Nuevo producto probando!!!!",
+    "description": "Descripción del nuevo producto",
+    "price": 50,
+    "thumbnail": "imagen_nuevo_producto.jpg",
+    "code": "P011",
+    "stock": 10
   }
 ]

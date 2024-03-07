@@ -20,6 +20,23 @@ router.get('/', async function(req, res) {
     }
 });
 
+router.post('/', async function(req, res) {
+    try {
+        const { title, description, price, thumbnail, code, stock } = req.body;
+        
+        if (!title || !description || !price || !thumbnail || !code || !stock) {
+            return res.status(400).json({ message: "Todos los campos son requeridos" });
+        }
+
+        await productManager.addProduct(title, description, price, thumbnail, code, stock);
+
+        res.status(201).json({ message: 'Producto agregado correctamente' });
+    } catch (error) {
+        console.error('Error al agregar el producto:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+});
+
 router.get('/:pid', function(req, res) {
     try {
         const productId = parseInt(req.params.pid);
