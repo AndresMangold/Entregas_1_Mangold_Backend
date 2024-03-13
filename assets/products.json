@@ -4,7 +4,7 @@
     "title": "Nuevo Producto0",
     "description": "Esta es una descripción modificada con put",
     "price": 200,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/1_Earl_Vikingo_1.jpg",
     "code": "P000",
     "stock": 20
   },
@@ -13,7 +13,7 @@
     "title": "Nuevo Producto1",
     "description": "Descripción del nuevo producto1",
     "price": 300,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/2_Hechicero_1.jpg",
     "code": "P001",
     "stock": 20
   },
@@ -22,7 +22,7 @@
     "title": "Nuevo Producto2",
     "description": "Descripción del nuevo producto2",
     "price": 500,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/3_Sabio_1.jpg",
     "code": "P002",
     "stock": 20
   },
@@ -31,7 +31,7 @@
     "title": "Nuevo Producto3",
     "description": "Descripción del nuevo producto3",
     "price": 600,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/4_Guardia_1.jpg",
     "code": "P003",
     "stock": 20
   },
@@ -40,7 +40,7 @@
     "title": "Nuevo Producto4",
     "description": "Descripción del nuevo producto4",
     "price": 500,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/5_Rey_1.jpg",
     "code": "P004",
     "stock": 20
   },
@@ -49,7 +49,7 @@
     "title": "Nuevo Producto5",
     "description": "Descripción del nuevo producto5",
     "price": 400,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/7_Escudera_1.jpg",
     "code": "P005",
     "stock": 20
   },
@@ -58,7 +58,7 @@
     "title": "Nuevo Producto6",
     "description": "Descripción del nuevo producto6",
     "price": 200,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/8_Miniaturas_2.jpg",
     "code": "P006",
     "stock": 20
   },
@@ -67,7 +67,7 @@
     "title": "Nuevo Producto7",
     "description": "Descripción del nuevo producto7",
     "price": 100,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/10_VikingoXL_1.jpg",
     "code": "P007",
     "stock": 20
   },
@@ -76,7 +76,7 @@
     "title": "Nuevo Producto8",
     "description": "Descripción del nuevo producto8",
     "price": 500,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/11_Mendigo_1.jpg",
     "code": "P008",
     "stock": 20
   },
@@ -85,7 +85,7 @@
     "title": "Nuevo Producto9",
     "description": "Descripción del nuevo producto9",
     "price": 500,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/12_Conjunto_1.jpg",
     "code": "P009",
     "stock": 20
   },
@@ -94,17 +94,8 @@
     "title": "Nuevo Producto10",
     "description": "Descripción del nuevo producto10",
     "price": 500,
-    "thumbnail": "imagen_nuevo_producto.jpg",
+    "thumbnail": "../img/12_Conjunto_2.jpg",
     "code": "P010",
     "stock": 20
-  },
-  {
-    "id": 12,
-    "title": "Nuevo producto probando!!!!",
-    "description": "Descripción del nuevo producto",
-    "price": 50,
-    "thumbnail": "imagen_nuevo_producto.jpg",
-    "code": "P011",
-    "stock": 10
   }
 ]

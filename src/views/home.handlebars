@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tienda VM-Woodworking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+    {{#each products}}
+    <div class="product">
+        <h4>{{title}}</h4>
+        <img class="product-image" src="{{thumbnail}}" alt="imagen de {{title}}">
+        <div class="product__info">
+            <p>{{description}}</p>
+            <p>Precio: {{price}}</p>
+            <p>Stock: {{stock}}</p>
+            <p>Código: {{code}}</p>
+        </div>
+    </div>
+    {{/each}}
+</div>
+</body>
+</html>
