@@ -20,7 +20,7 @@ router.get('/', async (_, res) => {
         res.render('home', {
             products: productsData,
             titlePage: 'Productos',
-            h1: 'Tienda',
+            h1: 'VM Woodworking',
             style: ['styles.css'],
             script: ['home.js']
         });
