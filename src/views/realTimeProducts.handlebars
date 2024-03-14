@@ -14,7 +14,7 @@
         {{#each products}}
         <div class="product">
             <h4>{{title}}</h4>
-            <img class="product-image" src="{{thumbnail}}" alt="imagen de {{title}}">
+            <img class="product-image" src="{{thumbnail}}" alt="imagen de {{title}}" width="200" height="auto">
             <div class="product__info">
                 <p>{{description}}</p>
                 <p>Precio: {{price}}</p>
@@ -52,10 +52,10 @@
             </div>
             {{!-- <div>
                 <label>Estado: </label>
-                <label>Verdadero</label>
                 <input type="radio" name="status" id="productStatusTrue" value="true">
-                <label>Falso</label>
+                <label for="productStatusTrue">Agregar Nuevo</label>
                 <input type="radio" name="status" id="productStatusFalse" value="false">
+                <label for="productStatusFalse">Borrar</label>
             </div> --}}
             <div>
                 <label>Stock: </label>
@@ -63,6 +63,16 @@
             </div>
             <button type="submit" id="addProduct" value="Agregar">Agregar</button>
     </div>
+    </form>
+    <form id="deleteForm" method="POST">
+        <legend>Eliminar Producto</legend>
+        <div>
+            <label>Código del Producto a Eliminar: </label>
+            <input type="text" id="productCodeToDelete" name="codeToDelete">
+        </div>
+        <div>
+            <button type="button" id="deleteProduct">Eliminar</button>
+        </div>
     </form>
 </body>
 

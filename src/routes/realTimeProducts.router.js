@@ -54,19 +54,15 @@ router.post('/', async (req, res) => {
 
 router.delete('/:pid', async (req, res) => {
     try {
-
         const productId = parseInt(req.params.pid);
-
         await manager.deleteProduct(productId);
-
         const products = await manager.getProducts();
-
         req.app.get('ws').emit('updateFeed', products);
-
-        res.status(301).redirect('/realTimeProducts');
+        res.status(301).redirect('/'); 
     } catch {
         res.status(500).json({ error: 'Error al eliminar el producto' });
     }
 });
+
 
 module.exports = router;

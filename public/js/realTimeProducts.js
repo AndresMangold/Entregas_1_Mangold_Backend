@@ -1,8 +1,7 @@
 const socket = io();
 
-
+// Manejador para agregar un nuevo producto al feed
 socket.on('newProduct', (newProduct) => {
-
     const container = document.getElementById('productFeed');
 
     const divContainer = document.createElement('div');
@@ -33,10 +32,10 @@ socket.on('newProduct', (newProduct) => {
     divInfo.append(description, price, stock, code);
     divContainer.append(title, thumbnail, divInfo);
     container.append(divContainer);
-})
+});
 
+// Manejador para actualizar el feed de productos
 socket.on('updateFeed', (products) => {
-
     const container = document.getElementById('productFeed');
     container.innerHTML = '';
 
@@ -69,5 +68,24 @@ socket.on('updateFeed', (products) => {
         divInfo.append(description, price, stock, code);
         divContainer.append(title, thumbnail, divInfo);
         container.append(divContainer);
-    })
-})
+    });
+});
+
+// Manejador para eliminar un producto
+const deleteButton = document.getElementById('deleteProduct');
+deleteButton.addEventListener('click', async () => {
+    try {
+        const productCode = document.getElementById('productCodeToDelete').value;
+        const response = await fetch(`/api/realTimeProducts/${productCode}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            window.location.href = '/api/realTimeProducts';
+        } else {
+            console.error('Error al eliminar el producto:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+    }
+});
