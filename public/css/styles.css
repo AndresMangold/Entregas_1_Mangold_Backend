@@ -3,6 +3,11 @@
     padding: 0;
 }
 
+body {
+    background-color: #161616;
+    font-family: 'Times New Roman', Times, serif
+}
+
 .form {
     margin: 2rem auto; 
     width: 20rem;
@@ -73,16 +78,28 @@ h1 {
 }
 
 .product {
-    background-color: #afafaf;
+    background-color: #6b6969;
     padding: 1rem;
     border: 1px solid gray;
     border-radius: 3rem;
 }
 
+.product h4 {
+    font-size: 30px; 
+    color: #ffffff; 
+}
+
+
 .product-image {
     width: 200px; 
     height: auto; 
 }
+
+.product__info {
+    font-size: 20px;
+    color: #ffffff; 
+}
+
 
 .page-title {
     color: #ffffff; 
