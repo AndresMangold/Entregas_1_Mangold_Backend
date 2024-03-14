@@ -11,6 +11,7 @@ body {
 .form {
     margin: 2rem auto; 
     width: 20rem;
+    background-color: #afafaf;
 }
 
 .form form {
@@ -70,23 +71,26 @@ h1 {
 
 .container {
     text-align: center;
-    margin: 2rem auto;
+    margin: 1rem auto;
     width: 80vw;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
 }
 
 .product {
-    background-color: #6b6969;
-    padding: 1rem;
-    border: 1px solid gray;
-    border-radius: 3rem;
+    background-color: rgba(107, 105, 105, 0.7);
+    padding: 0.5rem;
+    border: 0.5px solid gray;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 350px
 }
 
 .product h4 {
     font-size: 30px; 
-    color: #ffffff; 
+    color: #ffffff;
+    margin-bottom: 1rem; 
 }
 
 
@@ -97,7 +101,8 @@ h1 {
 
 .product__info {
     font-size: 20px;
-    color: #ffffff; 
+    color: #ffffff;
+    margin-top: 1rem;  
 }
 
 
