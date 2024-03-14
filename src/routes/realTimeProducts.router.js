@@ -21,7 +21,7 @@ router.get('/', async (_, res) => {
         res.render('realTimeProducts', {
             products: productsData,
             titlePage: 'Productos',
-            h1: 'Tienda',
+            h1: 'VM Woodworking',
             style: ['styles.css'],
             script: ['realTimeProducts.js'],
             useWS: true
@@ -35,11 +35,11 @@ router.get('/', async (_, res) => {
 router.post('/', async (req, res) => {
     try {
 
-        const { title, description, price, thumbnail, code, status, stock } = req.body;
+        const { title, description, price, thumbnail, code, stock } = req.body;
 
-        const newProduct = { title, description, price, thumbnail, code, status, stock };
+        const newProduct = { title, description, price, thumbnail, code, stock };
 
-        await manager.addProduct(title, description, price, thumbnail, code, status, stock);
+        await manager.addProduct(title, description, +price, thumbnail, code, +stock);
 
         if (newProduct.title && newProduct.description && newProduct.price && newProduct.code && newProduct.stock) {
             req.app.get('ws').emit('newProduct', newProduct);

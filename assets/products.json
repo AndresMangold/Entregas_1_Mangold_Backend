@@ -97,5 +97,14 @@
     "thumbnail": "../img/12_Conjunto_2.jpg",
     "code": "P010",
     "stock": 20
+  },
+  {
+    "id": 12,
+    "title": "imagen13",
+    "description": "descr",
+    "price": 200,
+    "thumbnail": "https://via.placeholder.com/150",
+    "code": "P150",
+    "stock": 20
   }
 ]
