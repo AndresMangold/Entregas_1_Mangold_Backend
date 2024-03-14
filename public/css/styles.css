@@ -110,3 +110,18 @@ h1 {
     color: #ffffff; 
     font-size: 50px; 
 }
+
+.form button {
+    width: 100%; 
+    padding: 10px; 
+    margin-top: 10px; 
+    background-color: #3bfa34; 
+    color: #000000; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+}
+
+.form button:hover {
+    background-color: #36ac00; 
+}

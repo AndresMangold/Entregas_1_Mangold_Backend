@@ -1,9 +1,8 @@
 const socket = io();
 
-// Escuchar el evento 'newProduct' enviado desde el servidor cuando se agrega un nuevo producto
+
 socket.on('newProduct', (newProduct) => {
 
-    // Manejo del DOM para generar el nuevo producto en el HTML
     const container = document.getElementById('productFeed');
 
     const divContainer = document.createElement('div');
@@ -36,10 +35,8 @@ socket.on('newProduct', (newProduct) => {
     container.append(divContainer);
 })
 
-// Escuchar el evento 'updateFeed' enviado desde el servidor cuando se actualiza la lista de productos
 socket.on('updateFeed', (products) => {
 
-    // Manejo del DOM para generar el nuevo producto en el HTML
     const container = document.getElementById('productFeed');
     container.innerHTML = '';
 
