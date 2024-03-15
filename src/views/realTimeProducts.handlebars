@@ -11,19 +11,20 @@
 <body>
 
     <div class="container" id="productFeed">
-        {{#each products}}
-        <div class="product">
-            <h4>{{title}}</h4>
-            <img class="product-image" src="{{thumbnail}}" alt="imagen de {{title}}" width="200" height="auto">
-            <div class="product__info">
-                <p>{{description}}</p>
-                <p>Precio: {{price}}</p>
-                <p>Stock: {{stock}}</p>
-                <p>Código: {{code}}</p>
-            </div>
+    {{#each products}}
+    <div class="product" data-product-id="{{id}}">
+        <h4>{{title}}</h4>
+        <img class="product-image" src="{{thumbnail}}" alt="imagen de {{title}}" width="200" height="auto">
+        <div class="product__info">
+            <p>{{description}}</p>
+            <p>Precio: {{price}}</p>
+            <p>Stock: {{stock}}</p>
+            <p>Código: {{code}}</p>
         </div>
-        {{/each}}
     </div>
+    {{/each}}
+</div>
+
 
     <div class="form">
         <form action="/api/realTimeProducts" id="productForm" method="post">
@@ -50,29 +51,12 @@
                 <label>Código: </label>
                 <input type="text" id="productCode" name="code">
             </div>
-            {{!-- <div>
-                <label>Estado: </label>
-                <input type="radio" name="status" id="productStatusTrue" value="true">
-                <label for="productStatusTrue">Agregar Nuevo</label>
-                <input type="radio" name="status" id="productStatusFalse" value="false">
-                <label for="productStatusFalse">Borrar</label>
-            </div> --}}
             <div>
                 <label>Stock: </label>
                 <input type="number" id="productStock" name="stock">
             </div>
             <button type="submit" id="addProduct" value="Agregar">Agregar</button>
     </div>
-    </form>
-    <form id="deleteForm" method="POST">
-        <legend>Eliminar Producto</legend>
-        <div>
-            <label>Código del Producto a Eliminar: </label>
-            <input type="text" id="productCodeToDelete" name="codeToDelete">
-        </div>
-        <div>
-            <button type="button" id="deleteProduct">Eliminar</button>
-        </div>
     </form>
 </body>
 
