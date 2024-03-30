@@ -10,6 +10,9 @@ const realTimeProductsRouter = require('./routes/realTimeProducts.router')
 const app = express();
 const server = http.createServer(app); 
 
+const usersRouter = require('./routes/users.router.js');
+const { default: mongoose } = require('mongoose');
+
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
@@ -25,6 +28,8 @@ app.use('/api/carts', cartsRouter);
 app.use('/api/home', homeRouter)
 app.use('/api/realTimeProducts', realTimeProductsRouter)
 
+app.use('/api/users', usersRouter)
+
 const PORT = process.env.PORT || 8080;
 
 const wsServer = new Server(server); 
@@ -34,6 +39,19 @@ wsServer.on('connection', (socket) => {
     console.log('Nuevo cliente conectado via WebSocket');
 })
 
-server.listen(PORT, () => {
-    console.log(`Servidor cargado en el puerto ${PORT}!`);
-});
+const main = async () => {
+
+    await mongoose.connect(
+        'mongodb+srv://andresmangold:aopJ8aACEF8vLHaO@andresdb.1mjqu3r.mongodb.net/?retryWrites=true&w=majority&appName=AndresDB',
+        {
+            dbName: 'AndresDB'
+        }
+    )
+
+    server.listen(PORT, () => {
+        console.log(`Servidor cargado en el puerto ${PORT}!`);
+    });
+}
+
+main()
+
