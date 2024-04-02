@@ -1,3 +1,4 @@
 module.exports = {
-    User: require('./user.model')
-};
+    Products: require('./product.model.js'),
+    Carts: require('./cart.model')
+}

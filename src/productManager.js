@@ -1,10 +1,9 @@
-const { promises: fs } = require('fs');
+const { MongoClient } = require('mongodb');
 
 class ProductManager {
-    constructor(filePath) {
-        this.products = [];
-        this.filePath = filePath;
-        this.init();
+    constructor() {
+        this.client = new MongoClient('mongodb://localhost:27017', { useUnifiedTopology: true });
+        this.productsCollection = null;
     }
 
     async init() {

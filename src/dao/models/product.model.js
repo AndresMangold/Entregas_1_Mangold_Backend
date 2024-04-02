@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+
 const collection = 'Products'
+
 const schema = new mongoose.Schema({
 
     title: {
@@ -20,7 +22,7 @@ const schema = new mongoose.Schema({
 
     thumbnail: {
         type: String,
-        default: 'NoImg'
+        default: 'Sin Imagen'
     },
 
     code: {
