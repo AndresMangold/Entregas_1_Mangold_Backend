@@ -1,4 +1,5 @@
 const { Products } = require('../models');
+const mongoose = require('mongoose');
 
 class ProductManager {
 
@@ -6,27 +7,18 @@ class ProductManager {
 
     async prepare() {
         if (Products.db.readyState !== 1) {
-            throw new Error('must connect to mongodb!')
-        }
-    }
-
-    async getProducts() {
-        try {
-            const allProducts = await Products.find();
-            return allProducts.map(p => p.toObject({ virtuals: true }));
-        } catch {
-            return [];
+            throw new Error('Debe conectarse a MongoDB primero');
         }
     }
 
     async getProductById(id) {
         try {
-            const product = await Products.findOne({ _id: id });
+            const product = await Products.findOne({ _id: mongoose.Types.ObjectId(id) });
 
             if (product) {
                 return product;
             } else {
-                throw new Error('Not Found: El ID solicitado no existe.');
+                throw new Error('No encontrado: El ID solicitado no existe.');
             }
         } catch (error) {
             console.error('Error al obtener el producto por ID:', error);
@@ -71,24 +63,27 @@ class ProductManager {
 
     async updateProduct(id, fieldsToUpdate) {
         try {
+            const objectId = mongoose.Types.ObjectId(id);
+    
             const areFieldsPresent = Object.keys(fieldsToUpdate).length > 0;
-
+    
             if (!areFieldsPresent) {
                 throw new Error('No se proporcionaron campos para actualizar');
             }
-
-            const updatedProduct = await Products.updateOne({ _id: id }, { $set: fieldsToUpdate });
-
+    
+            const updatedProduct = await Products.updateOne({ _id: objectId }, { $set: fieldsToUpdate });
+    
             if (updatedProduct.nModified === 0) {
                 throw new Error('No se encontró el producto para actualizar');
             }
-
+    
             return updatedProduct;
         } catch (error) {
             console.error('Error al actualizar el producto desde DB:', error);
             throw new Error('Error al actualizar el producto desde DB');
         }
     }
+    
 
     async deleteProduct(id) {
         await Products.deleteOne({ _id: id })

@@ -137,4 +137,7 @@ h1 {
     gap: 10px; 
 }
 
-
+.chat {
+    text-align: center;
+    margin: 1rem auto;
+}
