@@ -1,5 +1,4 @@
 const { Products } = require('../models');
-const mongoose = require('mongoose');
 
 class ProductManager {
 
@@ -8,6 +7,16 @@ class ProductManager {
     async prepare() {
         if (Products.db.readyState !== 1) {
             throw new Error('Debe conectarse a MongoDB primero');
+        }
+    }
+
+    async getProducts() {
+        try {
+            const allProducts = await Products.find();
+            return allProducts.map(p => p.toObject({ virtuals: true }));
+        } catch {
+            
+            return [];
         }
     }
 

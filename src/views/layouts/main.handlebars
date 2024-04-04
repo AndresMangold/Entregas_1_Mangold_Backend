@@ -12,10 +12,11 @@
 
 <body>
     <div class="navBar">
-        <h1 class="page-title">{{h1}}</h1>
+        <h1>VM - Woodworking</h1>
         <ul class="ul">
-            <li><a href="http://localhost:8080/api/home">Home</a></li>
-            <li><a href="http://localhost:8080/api/realTimeProducts">RealTimeProduct</a></li>
+            <li><a href="http://localhost:8080/api/products">Nuestros Productos</a></li>
+            <li><a href="http://localhost:8080/api/createProduct">Incluir Nuevo Producto</a></li>
+            <li><a href="http://localhost:8080/api/chat">Live Chat</a></li>
         </ul>
 
 
@@ -24,6 +25,15 @@
 
     {{#if useWS}}
     <script src="/socket.io/socket.io.js"></script>
+    {{/if}}
+
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    
+    {{#if useSweetAlert }}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {{/if}}
 
     {{#each script}}
