@@ -3,20 +3,22 @@ const { Messages, AllMessages } = require('../models');
 class ChatManager {
     constructor(io) {
         this.io = io;
-        this.io.on('connection', async (socket) => {
-            try {
-                const allMessages = await AllMessages.findOne({ _id: '660df59f6e542d70b8706764' });
-                socket.emit('allMessages', allMessages.messages);
+        this.io.on('connection', socket => this.handleConnection(socket));
+    }
 
-                socket.on('message', async (data) => {
-                    await this.handleMessage(data);
-                
-                    this.io.emit('message', data); 
-                });
-            } catch (error) {
-                console.error('Error en la conexión del cliente:', error);
-            }
-        });
+    async handleConnection(socket) {
+        try {
+            await this.prepare();
+            const allMessages = await AllMessages.findOne({ _id: '660df59f6e542d70b8706764' });
+            socket.emit('allMessages', allMessages ? allMessages.messages : []);
+
+            socket.on('message', async (data) => {
+                await this.handleMessage(data);
+                this.io.emit('message', data); 
+            });
+        } catch (error) {
+            console.error('Error en la conexión del cliente:', error);
+        }
     }
 
     async handleMessage(data) {
@@ -55,7 +57,7 @@ class ChatManager {
 
     async prepare() {
         if (Messages.db.readyState !== 1) {
-            throw new Error('must connect to mongodb!')
+            throw new Error('¡Debe conectarse a MongoDB!');
         }
     }
 }

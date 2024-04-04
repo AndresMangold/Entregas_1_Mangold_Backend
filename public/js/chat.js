@@ -4,6 +4,14 @@ const messageLogs = document.getElementById('messageLogs');
 const chatBox = document.getElementById('chatBox');
 let user;
 
+socket.on('allMessages', (allMessages) => {
+    messageLogs.innerHTML = '';
+
+    allMessages.forEach((message) => {
+        messageLogs.innerHTML += `<p><strong>${message.user}:</strong> ${message.message}</p>`;
+    });
+});
+
 Swal.fire({
     title: "Identifícate para continuar",
     input: "text",
@@ -21,17 +29,24 @@ Swal.fire({
 });
 
 function setupListenersAndFetchMessages() {
+
     socket.on('allMessages', (allMessages) => {
+        
+        messageLogs.innerHTML = '';
+
+        
         allMessages.forEach((message) => {
-            messageLogs.innerHTML += `<p><strong>${message.user}:</strong> ${message.messages}</p>`;
+            messageLogs.innerHTML += `<p><strong>${message.user}:</strong> ${message.message}</p>`;
         });
     });
 
-    socket.on('message', (data) => {
-        const { user, message } = data;
-        messageLogs.innerHTML += `<p><strong>${user}:</strong> ${message}</p>`;
+    
+    socket.on('message', (message) => {
+        
+        messageLogs.innerHTML += `<p><strong>${message.user}:</strong> ${message.message}</p>`;
     });
 
+    
     chatBox.addEventListener('keyup', (event) => {
         if (event.key === 'Enter') {
             const message = chatBox.value.trim();
