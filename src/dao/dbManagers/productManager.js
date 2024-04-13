@@ -1,4 +1,6 @@
 const { Products } = require('../models');
+const mongoose = require('mongoose');
+
 
 class ProductManager {
 
@@ -20,10 +22,32 @@ class ProductManager {
         }
     }
 
+    // async getProducts({ limit = 10, page = 1, sort = 'asc', query = '' }) {
+    //     try {
+    //         let filter = {};
+    //         if (query) {
+    //             filter = { category: query };
+    //         }
+    
+    //         const sortOrder = sort === 'desc' ? -1 : 1;
+    
+    //         const allProducts = await Products.find(filter)
+    //             .limit(limit)
+    //             .skip((page - 1) * limit)
+    //             .sort({ price: sortOrder });
+    
+    //         return allProducts.map(p => p.toObject({ virtuals: true }));
+    //     } catch (error) {
+    //         console.error('Error al obtener los productos:', error);
+    //         throw new Error('Error al obtener los productos');
+    //     }
+    // }
+    
+
     async getProductById(id) {
         try {
-            const product = await Products.findOne({ _id: mongoose.Types.ObjectId(id) });
-
+            const product = await Products.findOne({ _id: mongoose.Types.ObjectId.createFromHexString(id) });
+    
             if (product) {
                 return product;
             } else {
@@ -34,6 +58,7 @@ class ProductManager {
             throw new Error('Error al obtener el producto por ID');
         }
     }
+    
 
 
     async addProduct(title, description, price, thumbnail, code, status, stock) {

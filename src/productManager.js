@@ -60,6 +60,34 @@ class ProductManager {
         }
     }
 
+    // async getProducts(limit = 10, sort = 'asc', query = '') {
+    //     try {
+    //         let filteredProducts = [...this.products];
+    
+    //         // Filtrar por query (podrías implementar la lógica de búsqueda aquí)
+    //         if (query) {
+    //             filteredProducts = filteredProducts.filter(product => product.category === query);
+    //         }
+    
+    //         // Ordenar los productos
+    //         if (sort === 'asc') {
+    //             filteredProducts.sort((a, b) => a.price - b.price);
+    //         } else if (sort === 'desc') {
+    //             filteredProducts.sort((a, b) => b.price - a.price);
+    //         }
+    
+    //         // Aplicar el límite
+    //         const slicedProducts = filteredProducts.slice(0, limit);
+    
+    //         return slicedProducts;
+    //     } catch (error) {
+    //         console.error('Error al obtener los productos:', error);
+    //         throw new Error('Error al obtener los productos');
+    //     }
+    // }
+    
+    
+
     getProductById(id) {
         const product = this.products.find(product => product.id === id);
         if (product) {

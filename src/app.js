@@ -6,12 +6,11 @@ const mongoose = require('mongoose');
 
 const ProductManager = require('./dao/dbManagers/ProductManager');
 const CartManager = require('./dao/dbManagers/CartManager')
-const ChatManager = require('./dao/chatManagers/chatManager');
 
 const productsRouter = require('./routes/products.router');
 const cartRouter = require('./routes/cart.router');
 const createProductRouter = require('./routes/createProduct.router');
-const chatRouter = require('./routes/chat.router');
+
 
 const app = express();
 
@@ -27,7 +26,6 @@ app.use(express.json());
 app.use(express.static(`${__dirname}/../public`))
 
 app.use('/api/createProduct', createProductRouter);
-app.use('/api/chat', chatRouter);
 app.use('/api/products', productsRouter); 
 app.use('/api/cart', cartRouter); 
 
@@ -47,10 +45,6 @@ const main = async () => {
         const cartManager = new CartManager();
         await cartManager.prepare();
         app.set('cartManager', cartManager);
-
-        const chatManager = new ChatManager(io);
-        await chatManager.prepare();
-        app.set('chatManager', chatManager);
 
         console.log('Servidor cargado!' + '\n' + 'http://localhost:8080/api/products')
 
