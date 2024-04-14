@@ -4,7 +4,7 @@ const handlebars = require('express-handlebars');
 const { Server } = require('socket.io');
 const mongoose = require('mongoose');
 
-const ProductManager = require('./dao/dbManagers/ProductManager');
+const ProductManager = require('./dao/dbManagers/productManager');
 const CartManager = require('./dao/dbManagers/CartManager')
 
 const productsRouter = require('./routes/products.router');

@@ -11,8 +11,6 @@ router.get('/', async (_, res) => {
 
 router.post('/', async (req, res) => {
     try {
-
-       
         const { title, description, price, thumbnail, code, status, stock } = req.body;
 
         const productManager = req.app.get('productManager');

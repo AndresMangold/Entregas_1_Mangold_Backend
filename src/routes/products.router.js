@@ -3,43 +3,21 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        const productManager = req.app.get('productManager'); 
-        const products = await productManager.getProducts();
-        const limitFilter = req.query.limit; 
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 10;
+        const sort = req.query.sort;
+        const category = req.query.category;
+        const availability = req.query.availability;
 
-        const productsData = products.map(product => ({
-            title: product.title,
-            thumbnail: product.thumbnail,
-            description: product.description,
-            price: product.price,
-            stock: product.stock,
-            code: product.code,
-            id: product.id
-        }));
+        const productManager = req.app.get('productManager');
+        const products = await productManager.getProducts(page, limit, sort, category, availability);
 
-        if (limitFilter) { 
-            if (limitFilter <= 0 || isNaN(parseInt(limitFilter))) { 
-                res.status(400).json({ error: 'Debe ingresar un número válido superior a 0.' }); 
-                return;
-            } else {
-                const limit = parseInt(limitFilter); 
-                const limitedProducts = products.slice(0, limit); 
+        res.render('products', {
+            products,
+            titlePage: 'Productos',
+            style: ['styles.css'],
+        });
 
-                res.render('home', {
-                    products: limitedProducts,
-                    titlePage: 'Productos',
-                    h1: 'Tienda',
-                    style: ['styles.css'],
-                });
-            }
-        } else {
-            res.render('home', {
-                products: productsData,
-                titlePage: 'Productos',
-                style: ['styles.css'],
-            });
-
-        }
     } catch {
         res.status(500).json({ Error: 'Error al cargar los productos' }); 
     };
@@ -47,15 +25,44 @@ router.get('/', async (req, res) => {
 
 router.get('/:pid', async (req, res) => {
     try {
+
         const productId = req.params.pid; 
         const productManager = req.app.get('productManager');
         const product = await productManager.getProductById(productId); 
-        res.status(200).json(product); 
+
+        const productData = {
+            title: product.title,
+            thumbnail: product.thumbnail,
+            description: product.description,
+            price: product.price,
+            stock: product.stock,
+            code: product.code,
+            id: product.id
+        };
+
+        res.status(200).render('product', {
+            product: [productData],
+            titlePage: `Productos | ${product.title}`,
+            style: ['styles.css'],
+        });
+
+
     } catch (err) {
         res.status(500).json({ Error: err.message }); 
     }
 });
 
+router.post('/:pid', async (req, res) => {
+    try {
+        const productId = req.params.pid;
+        const cartId = '6619078c94d150818d996ec7'
+        const cartManager = req.app.get('cartManager');
+        await cartManager.addProductToCart(productId, cartId)
+        res.status(301).redirect('/api/products');
+    } catch (err) {
+        res.status(500).json({ Error: err.message })
+    }
+});
 
 
 router.post('/', async (req, res) => {
@@ -81,13 +88,12 @@ router.put('/:pid', async (req, res) => {
 });
 
 
-
 router.delete('/:pid', async (req, res) => {
     try {
         const productId = req.params.pid; 
         const productManager = req.app.get('productManager');
         await productManager.deleteProduct(productId); 
-        res.status(200).json({ message: 'Producto eliminado' }); 
+        res.status(301).redirect('/api/products'); 
     } catch (err) {
         res.status(500).json({ Error: err.message }); 
     }

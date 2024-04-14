@@ -1,127 +1,94 @@
-const fs = require('fs');
-const ProductManager = require('./productManager');
-const manager = new ProductManager(`${__dirname}/../assets/products.json`);
+// const { MongoClient, ObjectId } = require('mongodb');
 
-class CartManager {
-    #carts;
-    #lastCartId;
-    path;
+// class CartManager {
+//     constructor() {
+//         this.client = new MongoClient('mongodb://localhost:27017', { useUnifiedTopology: true });
+//         this.db = null;
+//     }
 
-    constructor(path) {
-        this.#carts = [];
-        this.path = path;
-        this.#lastCartId = 1;
-        this.#readFile();
-    }
+//     async connect() {
+//         try {
+//             await this.client.connect();
+//             console.log('Connected to MongoDB');
+//             this.db = this.client.db('ecommerce'); // Reemplaza 'nombre_de_tu_base_de_datos' con el nombre de tu base de datos
+//         } catch (error) {
+//             console.error('Error connecting to MongoDB:', error);
+//             throw error;
+//         }
+//     }
 
-    async #readFile() {
-        try {
-            const fileData = await fs.promises.readFile(this.path, 'utf-8');
-            this.#carts = JSON.parse(fileData);
-            this.#updateLastCartId();
-        } catch (error) {
-            await this.#saveFile();
-        }
-    }
+//     async getCarts() {
+//         try {
+//             const cartsCollection = this.db.collection('carts'); // Reemplaza 'carts' con el nombre de tu colección de carritos
+//             const carts = await cartsCollection.find({}).toArray();
+//             return carts;
+//         } catch (error) {
+//             console.error('Error getting carts from MongoDB:', error);
+//             throw error;
+//         }
+//     }
 
-    #updateLastCartId() {
-        const lastCart = this.#carts[this.#carts.length - 1];
-        if (lastCart) {
-            this.#lastCartId = lastCart.id + 1;
-        }
-    }
+//     async addCart() {
+//         try {
+//             const cartsCollection = this.db.collection('carts');
+//             const result = await cartsCollection.insertOne({ products: [] });
+//             console.log('Nuevo carrito creado');
+//             return result.insertedId;
+//         } catch (error) {
+//             console.error('Error adding cart to MongoDB:', error);
+//             throw error;
+//         }
+//     }
 
-    async #saveFile() {
-        try {
-            await fs.promises.writeFile(this.path, JSON.stringify(this.#carts, null, 2), 'utf-8');
-        } catch (error) {
-            console.error('Error al guardar el archivo:', error);
-            throw error;
-        }
-    }
+//     async getCartById(cartId) {
+//         try {
+//             const cartsCollection = this.db.collection('carts');
+//             const cart = await cartsCollection.findOne({ _id: new ObjectId(cartId) });
+//             if (!cart) {
+//                 throw new Error('Not Found: No existe el ID de carrito');
+//             }
+//             return cart;
+//         } catch (error) {
+//             console.error('Error getting cart by ID from MongoDB:', error);
+//             throw error;
+//         }
+//     }
 
+//     async addProductToCart(productId, cartId) {
+//         try {
+//             const productsCollection = this.db.collection('products'); // Reemplaza 'products' con el nombre de tu colección de productos
+//             const product = await productsCollection.findOne({ _id: new ObjectId(productId) });
+//             if (!product) {
+//                 throw new Error('El ID de producto no existe');
+//             }
 
-    #getNewId() {
-        return this.#lastCartId++;
-    }
+//             const cartsCollection = this.db.collection('carts');
+//             const cart = await cartsCollection.findOne({ _id: new ObjectId(cartId) });
+//             if (!cart) {
+//                 throw new Error('El ID de carrito no existe');
+//             }
 
-    async getCarts() {
-        try {
-            const fileContents = await fs.promises.readFile(this.path, 'utf-8');
-            const existingCart = JSON.parse(fileContents);
-            return existingCart;
-        } catch (err) {
-            return [];
-        }
-    }
+//             const existingProductIndex = cart.products.findIndex(p => p.id === productId);
+//             if (existingProductIndex !== -1) {
+//                 cart.products[existingProductIndex].quantity += 1;
+//             } else {
+//                 cart.products.push({ id: productId, quantity: 1 });
+//             }
 
-    async addCart() {
-        try {
-            const cart = { id: this.#getNewId(), products: [] }
-            this.#carts.push(cart);
-            await this.#saveFile();
-            console.log('Nuevo carrito creado')
-        } catch {
-            throw new Error('Hubo un error al generar el carrito');
-        }
-    }
+//             await cartsCollection.updateOne({ _id: new ObjectId(cartId) }, { $set: { products: cart.products } });
 
-    async createCart() {
-        try {
-            const cart = { id: this.#getNewId(), products: [] };
-            this.#carts.push(cart);
-            await this.#saveFile();
-            console.log('Nuevo carrito creado');
-            return cart.id;
-        } catch (error) {
-            console.error('Error al crear el carrito:', error);
-            throw new Error('Hubo un error al generar el carrito');
-        }
-    }
+//             console.log('Producto agregado al carrito correctamente');
+//             return cart;
+//         } catch (error) {
+//             console.error('Error adding product to cart in MongoDB:', error);
+//             throw new Error('Hubo un error al agregar un producto al carrito.');
+//         }
+//     }
 
-    async getCartById(cartId) {
-        const existingCarts = await this.getCarts();
-        const foundCart = existingCarts.find(cart => cart.id === cartId);
-        if (foundCart) {
-            return foundCart;
-        } else {
-            throw new Error('Not Found: No existe el ID de carrito');
-        }
-    }        
+//     async close() {
+//         await this.client.close();
+//         console.log('Disconnected from MongoDB');
+//     }
+// }
 
-    async addProductToCart(productId, cartId) {
-        try {
-            const product = await manager.getProductById(productId);
-            const cart = await this.getCartById(cartId);
-
-            const existingProduct = cart.products.find(p => p.id === productId);
-
-            if (existingProduct) {
-                existingProduct.quantity += 1;
-            } else {
-                const productToAdd = { id: product.id, quantity: 1 };
-                cart.products.push(productToAdd);
-            }
-
-            const updatedCarts = await this.getCarts();
-            const indexToUpdate = updatedCarts.findIndex(c => c.id === cartId);
-            if (indexToUpdate !== -1) {
-                updatedCarts[indexToUpdate] = cart;
-                this.#carts = updatedCarts;
-                await this.#saveFile();
-                console.log('Producto agregado al carrito correctamente');
-                return cart;
-            } else {
-                throw new Error('No se encontró el carrito para actualizar');
-            }
-
-        } catch (error) {
-            console.error('Error en addProductToCart:', error);
-            throw new Error('Error al cargar el producto al archivo');
-        }
-    }
-
-
-};
-
-module.exports = CartManager;
+// module.exports = CartManager;

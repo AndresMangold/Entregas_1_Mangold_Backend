@@ -19,6 +19,7 @@ class CartManager {
             throw new Error('Error al importar los carritos');
         }
     }
+    
     async addCart() {
         try {
             await Carts.create({

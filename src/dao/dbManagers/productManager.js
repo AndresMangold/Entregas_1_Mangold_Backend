@@ -1,6 +1,4 @@
 const { Products } = require('../models');
-const mongoose = require('mongoose');
-
 
 class ProductManager {
 
@@ -8,64 +6,68 @@ class ProductManager {
 
     async prepare() {
         if (Products.db.readyState !== 1) {
-            throw new Error('Debe conectarse a MongoDB primero');
+            throw new Error('must connect to mongodb!')
         }
     }
 
-    async getProducts() {
+    async getProducts(page, limit, sort, category, availability) {
         try {
-            const allProducts = await Products.find();
-            return allProducts.map(p => p.toObject({ virtuals: true }));
-        } catch {
-            
-            return [];
+            const query = {
+                ...(category && { category: category }),
+                ...(availability && { status: availability === 'true' })
+            };
+            const options = {
+                limit: parseInt(limit),
+                page: parseInt(page),
+                sort: sort ? { price: sort } : undefined,
+                lean: true
+            };
+
+            const allProducts = await Products.paginate(query, options);
+
+            const status = allProducts ? 'success' : 'error';
+            const prevLink = allProducts.hasPrevPage ? `/api/products?page=${allProducts.prevPage}` : null;
+            const nextLink = allProducts.hasNextPage ? `/api/products?page=${allProducts.nextPage}` : null;
+
+            const result = {
+                status,
+                payload: allProducts.docs,
+                totalPages: allProducts.totalPages,
+                prevPage: allProducts.prevPage,
+                nextPage: allProducts.nextPage,
+                page: allProducts.page,
+                hasPrevPage: allProducts.hasPrevPage,
+                hasNextPage: allProducts.hasNextPage,
+                prevLink,
+                nextLink
+            };
+            return result;
+        } catch (error) {
+            throw new Error('Error al obtener los productos');
         }
     }
-
-    // async getProducts({ limit = 10, page = 1, sort = 'asc', query = '' }) {
-    //     try {
-    //         let filter = {};
-    //         if (query) {
-    //             filter = { category: query };
-    //         }
-    
-    //         const sortOrder = sort === 'desc' ? -1 : 1;
-    
-    //         const allProducts = await Products.find(filter)
-    //             .limit(limit)
-    //             .skip((page - 1) * limit)
-    //             .sort({ price: sortOrder });
-    
-    //         return allProducts.map(p => p.toObject({ virtuals: true }));
-    //     } catch (error) {
-    //         console.error('Error al obtener los productos:', error);
-    //         throw new Error('Error al obtener los productos');
-    //     }
-    // }
-    
 
     async getProductById(id) {
         try {
-            const product = await Products.findOne({ _id: mongoose.Types.ObjectId.createFromHexString(id) });
-    
+            const product = await Products.findOne({ _id: id });
+
             if (product) {
                 return product;
             } else {
-                throw new Error('No encontrado: El ID solicitado no existe.');
+                throw new Error('Not Found: El ID solicitado no existe.');
             }
         } catch (error) {
             console.error('Error al obtener el producto por ID:', error);
             throw new Error('Error al obtener el producto por ID');
         }
     }
-    
 
 
-    async addProduct(title, description, price, thumbnail, code, status, stock) {
+    async addProduct(title, description, price, thumbnail, code, status, stock, category) {
 
         const invalidOptions = isNaN(+price) || +price <= 0 || isNaN(+stock) || +stock < 0;
 
-        if (!title || !description || !code || invalidOptions) {
+        if (!title || !description || !code || !category || invalidOptions) {
             throw new Error('Error al validar los datos');
         };
 
@@ -86,6 +88,7 @@ class ProductManager {
                 code,
                 status,
                 stock,
+                category
             });
 
             console.log('Producto agregado correctamente');
@@ -97,30 +100,31 @@ class ProductManager {
 
     async updateProduct(id, fieldsToUpdate) {
         try {
-            const objectId = mongoose.Types.ObjectId(id);
-    
             const areFieldsPresent = Object.keys(fieldsToUpdate).length > 0;
-    
+
             if (!areFieldsPresent) {
                 throw new Error('No se proporcionaron campos para actualizar');
             }
-    
-            const updatedProduct = await Products.updateOne({ _id: objectId }, { $set: fieldsToUpdate });
-    
+
+            const updatedProduct = await Products.updateOne({ _id: id }, { $set: fieldsToUpdate });
+
             if (updatedProduct.nModified === 0) {
                 throw new Error('No se encontró el producto para actualizar');
             }
-    
+
             return updatedProduct;
         } catch (error) {
             console.error('Error al actualizar el producto desde DB:', error);
             throw new Error('Error al actualizar el producto desde DB');
         }
     }
-    
 
-    async deleteProduct(id) {
-        await Products.deleteOne({ _id: id })
+    async deleteProduct(productId) {
+        try {
+            await Products.deleteOne({ _id: productId });
+        } catch (error) {
+            throw new Error('Error al eliminar el producto en la base de datos');
+        }
     }
 }
 

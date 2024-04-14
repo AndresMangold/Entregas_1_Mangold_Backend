@@ -110,6 +110,75 @@ h1 {
     margin-top: 1rem;  
 }
 
+.products {
+    background-color: rgba(107, 105, 105, 0.7);
+    padding: 0.5rem;
+    border: 0.5px solid gray;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 250px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+.products h4 {
+    font-size: 20px; 
+    color: #ffffff;
+    margin-bottom: 0.5rem; 
+}
+
+.products p {
+    font-size: 16px; 
+    color: #ffffff;
+    margin: 0.5rem 0; 
+}
+
+.container {
+    text-align: center;
+    margin: 1rem auto;
+    width: 90%; 
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 1rem; 
+}
+
+.page-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.current-page {
+    color: white;
+}
+
+.current-page span {
+    color: #ffffff; 
+    font-weight: bold;
+}
+
+.pagination-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.pagination-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid white;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-link:hover {
+    background-color: #ffffff; 
+    color: #000000; 
+}
+
 
 .page-title {
     color: #ffffff; 
@@ -137,7 +206,31 @@ h1 {
     gap: 10px; 
 }
 
-.chat {
-    text-align: center;
-    margin: 1rem auto;
+.add-to-cart-button {
+    background-color: #4CAF50; 
+    border: none; 
+    color: white; 
+    padding: 10px 20px; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    font-size: 16px; 
+    margin: 4px 2px; 
+    cursor: pointer; 
+    border-radius: 4px; 
 }
+
+.add-to-cart-button:hover {
+    background-color: #45a049; 
+}
+
+.cart {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.cart .cart__id {
+    width: 15rem;
+}
+
