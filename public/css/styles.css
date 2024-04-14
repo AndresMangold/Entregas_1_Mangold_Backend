@@ -38,6 +38,10 @@ h1 {
     text-decoration: chartreuse;
 }
 
+h2 {
+    color: white;
+}
+
 .navBar h1 {
     text-align: center;
     padding: 2rem;
@@ -69,14 +73,6 @@ h1 {
     color: #000000;
 }
 
-.container {
-    text-align: center;
-    margin: 1rem auto;
-    width: 80vw;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-}
 
 .product {
     background-color: rgba(107, 105, 105, 0.7);
@@ -140,7 +136,7 @@ h1 {
     margin: 1rem auto;
     width: 90%; 
     display: grid;
-    grid-template-columns: repeat(4, 1fr); 
+    /* grid-template-columns: repeat(4, 1fr);  */
     gap: 1rem; 
 }
 
