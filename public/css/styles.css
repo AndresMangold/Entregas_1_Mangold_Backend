@@ -5,7 +5,7 @@
 
 body {
     background-color: #161616;
-    font-family: 'Times New Roman', Times, serif
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .form {
@@ -73,6 +73,11 @@ h2 {
     color: #000000;
 }
 
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 1rem; 
+}
 
 .product {
     background-color: rgba(107, 105, 105, 0.7);
@@ -80,15 +85,15 @@ h2 {
     border: 0.5px solid gray;
     border-radius: 1rem;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-    width: 350px
+    width: calc(50% - 0.5rem); 
 }
+
 
 .product h4 {
     font-size: 30px; 
     color: #ffffff;
     margin-bottom: 1rem; 
 }
-
 
 .product-image {
     width: 200px; 
@@ -134,9 +139,8 @@ h2 {
 .container {
     text-align: center;
     margin: 1rem auto;
-    width: 90%; 
+    max-width: 1200px; 
     display: grid;
-    /* grid-template-columns: repeat(4, 1fr);  */
     gap: 1rem; 
 }
 
@@ -174,7 +178,6 @@ h2 {
     background-color: #ffffff; 
     color: #000000; 
 }
-
 
 .page-title {
     color: #ffffff; 
@@ -228,5 +231,23 @@ h2 {
 
 .cart .cart__id {
     width: 15rem;
+}
+
+.product-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.product-link:hover {
+    background-color: #45a049;
+}
+
+.product p {
+    color: white; 
 }
 

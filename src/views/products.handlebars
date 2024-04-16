@@ -1,19 +1,6 @@
 <div class="container">
     <h2>Productos</h2>
 
-    <div class="page-info">
-        <p class="current-page">Página actual: <span>{{products.page}}</span></p>
-        <div class="pagination-links">
-            {{#if products.hasPrevPage}}
-            <a href="{{products.prevLink}}" class="pagination-link">Anterior</a>
-            {{/if}}
-
-            {{#if products.hasNextPage}}
-            <a href="{{products.nextLink}}" class="pagination-link">Siguiente</a>
-            {{/if}}
-        </div>
-    </div>
-
     <ul class="product-list">
         {{#each products.payload}}
         <li>
@@ -28,4 +15,17 @@
         </li>
         {{/each}}
     </ul>
+
+    <div class="page-info">
+        <p class="current-page">Página actual: <span>{{products.page}}</span></p>
+        <div class="pagination-links">
+            {{#if products.hasPrevPage}}
+            <a href="{{products.prevLink}}" class="pagination-link">Anterior</a>
+            {{/if}}
+
+            {{#if products.hasNextPage}}
+            <a href="{{products.nextLink}}" class="pagination-link">Siguiente</a>
+            {{/if}}
+        </div>
+    </div>
 </div>
