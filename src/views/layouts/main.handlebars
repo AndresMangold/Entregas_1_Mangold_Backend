@@ -16,7 +16,7 @@
         <ul class="ul">
             <li><a href="http://localhost:8080/api/products">Nuestros Productos</a></li>
             <li><a href="http://localhost:8080/api/createProduct">Incluir Nuevo Producto</a></li>
-            <li><a href="http://localhost:8080/api/viewShopCart">Carrito de Compras</a></li>
+            <li><a href="http://localhost:8080/api/cart">Carrito de Compras</a></li>
         </ul>
 
 
@@ -31,10 +31,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-    
-    {{#if useSweetAlert }}
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{/if}}
 
     {{#each script}}
     <script src="/js/{{this}}"></script>

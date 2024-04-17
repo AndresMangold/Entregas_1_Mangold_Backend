@@ -145,24 +145,18 @@ h2 {
 }
 
 .page-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align: center; 
     margin-bottom: 1rem;
+}
+
+.pagination-links {
+    display: inline-block; 
+    margin-top: 0.5rem; 
 }
 
 .current-page {
     color: white;
-}
-
-.current-page span {
-    color: #ffffff; 
-    font-weight: bold;
-}
-
-.pagination-links {
-    display: flex;
-    gap: 1rem;
+    margin-bottom: 0; 
 }
 
 .pagination-link {
@@ -173,6 +167,12 @@ h2 {
     border-radius: 0.5rem;
     transition: background-color 0.3s ease;
 }
+
+.pagination-link:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
 
 .pagination-link:hover {
     background-color: #ffffff; 
@@ -249,5 +249,79 @@ h2 {
 
 .product p {
     color: white; 
+}
+
+
+
+.cart {
+    background-color: #444; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    margin-bottom: 1rem; 
+}
+
+.cart p,
+.cart a {
+    color: white; 
+    margin-bottom: 0.5rem; 
+}
+
+.cart a {
+    display: inline-block; 
+    padding: 0.5rem 1rem; 
+    background-color: #4CAF50; 
+    border: none; 
+    color: white; 
+    text-decoration: none; 
+    border-radius: 0.25rem; 
+    transition: background-color 0.3s ease; 
+}
+
+.cart a:hover {
+    background-color: #45a049; 
+}
+
+
+.cart-container {
+    text-align: center;
+    margin: 1rem auto;
+    max-width: 800px;
+    background-color: #444;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.cart-container h2 {
+    color: white;
+}
+
+.cart-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.cart-container .margin {
+    margin-bottom: 1rem;
+}
+
+.cart-container .margin p {
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.cart-container a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+}
+
+.cart-container a:hover {
+    background-color: #45a049;
 }
 

@@ -55,7 +55,7 @@ router.get('/:pid', async (req, res) => {
 router.post('/:pid', async (req, res) => {
     try {
         const productId = req.params.pid;
-        const cartId = '6619078c94d150818d996ec7'
+        const cartId = '661eeec55d8db44e2eb4053f'
         const cartManager = req.app.get('cartManager');
         await cartManager.addProductToCart(productId, cartId)
         res.status(301).redirect('/api/products');
