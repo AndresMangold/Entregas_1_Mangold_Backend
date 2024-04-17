@@ -50,6 +50,18 @@ router.get('/:cid', async (req, res) => {
     }
 });
 
+router.put('/:cid', async (req, res) => {
+    try {
+        const cartId = req.params.cid; 
+        const { products } = req.body;
+        const cartManager = req.app.get('cartManager');
+        await cartManager.updateCart(cartId, products);
+        res.status(200).json({ message: 'Carrito actualizado correctamente.' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const cartManager = req.app.get('cartManager');
@@ -59,7 +71,6 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'No se pudo crear el carrito' }); 
     }
 });
-
 
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
@@ -74,19 +85,18 @@ router.post('/:cid/product/:pid', async (req, res) => {
     }
 });
 
-
-router.put('/:cid', async (req, res) => {
+router.put('/:cid/product/:pid', async (req, res) => {
     try {
         const cartId = req.params.cid; 
-        const { products } = req.body;
+        const productId = req.params.pid; 
+        const { quantity } = req.body;
         const cartManager = req.app.get('cartManager');
-        await cartManager.updateCart(cartId, products);
-        res.status(200).json({ message: 'Carrito actualizado correctamente.' });
+        await cartManager.updateProductQuantityFromCart(productId, cartId, quantity);
+        res.status(301).redirect('/api/cart');
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ Error: err.message })
     }
 });
-
 
 
 router.delete('/:cid/product/:pid', async (req, res) => {
@@ -101,19 +111,6 @@ router.delete('/:cid/product/:pid', async (req, res) => {
     }
 });
 
-
-router.put('/:cid/product/:pid', async (req, res) => {
-    try {
-        const cartId = req.params.cid; 
-        const productId = req.params.pid; 
-        const { quantity } = req.body;
-        const cartManager = req.app.get('cartManager');
-        await cartManager.updateProductQuantityFromCart(productId, cartId, quantity);
-        res.status(301).redirect('/api/cart');
-    } catch (err) {
-        res.status(500).json({ Error: err.message })
-    }
-});
 
 router.delete('/:cid', async (req, res) => {
     try {

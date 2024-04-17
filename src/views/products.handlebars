@@ -9,7 +9,9 @@
                 <img class="product-image" src="{{thumbnail}}" alt="imagen de {{title}}">
                 <p>Precio: {{this.price}}</p>
                 <p>Stock: {{this.stock}}</p>
-                <p>ID: {{this._id}}</p>
+                <p>Descripcion: {{this.description}}</p>
+                <p class="id-label">ID:</p> 
+                <p class="id-number">{{this._id}}</p> 
                 <a href="http://localhost:8080/api/products/{{this._id}}" class="product-link">Ver</a>
             </div>
         </li>

@@ -23,6 +23,18 @@ router.get('/', async (req, res) => {
     };
 });
 
+router.post('/:pid', async (req, res) => {
+    try {
+        const productId = req.params.pid;
+        const cartId = '661eeec55d8db44e2eb4053f'
+        const cartManager = req.app.get('cartManager');
+        await cartManager.addProductToCart(productId, cartId)
+        res.status(301).redirect('/api/products');
+    } catch (err) {
+        res.status(500).json({ Error: err.message })
+    }
+});
+
 router.get('/:pid', async (req, res) => {
     try {
 
@@ -52,29 +64,6 @@ router.get('/:pid', async (req, res) => {
     }
 });
 
-router.post('/:pid', async (req, res) => {
-    try {
-        const productId = req.params.pid;
-        const cartId = '661eeec55d8db44e2eb4053f'
-        const cartManager = req.app.get('cartManager');
-        await cartManager.addProductToCart(productId, cartId)
-        res.status(301).redirect('/api/products');
-    } catch (err) {
-        res.status(500).json({ Error: err.message })
-    }
-});
-
-
-router.post('/', async (req, res) => {
-    try {
-        const { title, description, price, thumbnail, code, status, stock } = req.body; 
-        const productManager = req.app.get('productManager');
-        await productManager.addProduct(title, description, price, thumbnail, code, status, stock); 
-        res.status(301).redirect('/api/products'); 
-    } catch (error) {
-        res.status(500).json({ Error: error.message }); 
-    }
-});
 
 router.put('/:pid', async (req, res) => {
     try {
@@ -87,6 +76,16 @@ router.put('/:pid', async (req, res) => {
     }
 });
 
+router.post('/', async (req, res) => {
+    try {
+        const { title, description, price, thumbnail, code, status, stock } = req.body; 
+        const productManager = req.app.get('productManager');
+        await productManager.addProduct(title, description, price, thumbnail, code, status, stock); 
+        res.status(301).redirect('/api/products'); 
+    } catch (error) {
+        res.status(500).json({ Error: error.message }); 
+    }
+});
 
 router.delete('/:pid', async (req, res) => {
     try {

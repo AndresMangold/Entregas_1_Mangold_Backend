@@ -6,7 +6,7 @@ class ProductManager {
 
     async prepare() {
         if (Products.db.readyState !== 1) {
-            throw new Error('must connect to mongodb!')
+            throw new Error('Debe estar conectado a MongoDB')
         }
     }
 
@@ -54,7 +54,7 @@ class ProductManager {
             if (product) {
                 return product;
             } else {
-                throw new Error('Not Found: El ID solicitado no existe.');
+                throw new Error('El ID solicitado no existe.');
             }
         } catch (error) {
             console.error('Error al obtener el producto por ID:', error);
@@ -62,6 +62,26 @@ class ProductManager {
         }
     }
 
+    async updateProduct(id, fieldsToUpdate) {
+        try {
+            const areFieldsPresent = Object.keys(fieldsToUpdate).length > 0;
+
+            if (!areFieldsPresent) {
+                throw new Error('No se proporcionaron campos para actualizar');
+            }
+
+            const updatedProduct = await Products.updateOne({ _id: id }, { $set: fieldsToUpdate });
+
+            if (updatedProduct.nModified === 0) {
+                throw new Error('No se encontró el producto para actualizar');
+            }
+
+            return updatedProduct;
+        } catch (error) {
+            console.error('Error al actualizar el producto desde la Base de datos:', error);
+            throw new Error('Error al actualizar el producto desde la Base de datos');
+        }
+    }
 
     async addProduct(title, description, price, thumbnail, code, status, stock, category) {
 
@@ -71,7 +91,7 @@ class ProductManager {
             throw new Error('Error al validar los datos');
         };
 
-        const finalThumbnail = thumbnail ? thumbnail : 'Sin Imagen';
+        const finalThumbnail = thumbnail ? thumbnail : 'No image';
 
         if (typeof status === 'undefined' || status === true || status === 'true') {
             status = true;
@@ -93,37 +113,17 @@ class ProductManager {
 
             console.log('Producto agregado correctamente');
         } catch (error) {
-            console.error('Error al agregar el producto desde DB:', error);
-            throw new Error('Error al agregar el producto desde DB');
+            console.error('Error al agregar el producto desde Base de Datos:', error);
+            throw new Error('Error al agregar el producto desde Base de Datos');
         }
     }
 
-    async updateProduct(id, fieldsToUpdate) {
-        try {
-            const areFieldsPresent = Object.keys(fieldsToUpdate).length > 0;
-
-            if (!areFieldsPresent) {
-                throw new Error('No se proporcionaron campos para actualizar');
-            }
-
-            const updatedProduct = await Products.updateOne({ _id: id }, { $set: fieldsToUpdate });
-
-            if (updatedProduct.nModified === 0) {
-                throw new Error('No se encontró el producto para actualizar');
-            }
-
-            return updatedProduct;
-        } catch (error) {
-            console.error('Error al actualizar el producto desde DB:', error);
-            throw new Error('Error al actualizar el producto desde DB');
-        }
-    }
 
     async deleteProduct(productId) {
         try {
             await Products.deleteOne({ _id: productId });
         } catch (error) {
-            throw new Error('Error al eliminar el producto en la base de datos');
+            throw new Error('Error al eliminar el producto en la Base de Datos');
         }
     }
 }

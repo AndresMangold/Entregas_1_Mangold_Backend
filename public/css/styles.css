@@ -251,6 +251,20 @@ h2 {
     color: white; 
 }
 
+.product p {
+    color: white;
+    font-size: 16px; 
+    margin: 0.5rem 0;
+}
+
+.product p.id-label {
+    font-size: 14px; 
+}
+
+.product p.id-number {
+    font-size: 12px; 
+}
+
 
 
 .cart {
@@ -325,6 +339,17 @@ h2 {
     background-color: #45a049;
 }
 
+.cart-container .margin {
+    margin-bottom: 3rem; 
+    margin-top: 2rem; 
+}
+
+.cart-container .margin p {
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+
 .product__info p {
     margin-bottom: 0.75rem;
 }
@@ -332,6 +357,7 @@ h2 {
 .add-to-cart-green-button {
     background-color: #4CAF50;
     margin-top: 1rem;
+    margin-bottom: 2rem;
     padding: 12px 24px;
     border: none;
     border-radius: 4px;
