@@ -1,4 +1,6 @@
 const { Router } = require('express')
+const User = require('../dao/models/user.model')
+const { userisLoggedIn, userIsNotLoggedIn } = require('../middlewares/auth.middleware')
 
 const router = Router()
 
@@ -12,32 +14,34 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/login', (_, res) => {
-    // TODO: agregar middleware, sólo se puede acceder si no está logueado
+router.get('/login', userIsNotLoggedIn, (_, res) => {
     res.render('login', {
         title: 'Login'
     })
 })
 
-router.get('/register', (_, res) => {
-    // TODO: agregar middleware, sólo se puede acceder si no está logueado
+router.get('/register', userIsNotLoggedIn, (_, res) => {
     res.render('register', {
         title: 'Register'
     })
 })
 
-router.get('/profile', (_, res) => {
-    // TODO: agregar middleware, sólo se puede acceder si está logueado
-    // TODO: mostrar los datos del usuario actualmente loggeado, en vez de los fake
-    res.render('profile', {
-        title: 'My profile',
-        user: {
-            firstName: 'Luke',
-            lastName: 'SkyWalker',
-            age: 33,
-            email: 'luke@gmail.com'
-        }
-    })
-})
+router.get('/profile', userisLoggedIn, async (req, res) => {
+    try {
+        const idFromSession = req.session.user._id;
+        // Corrige la consulta para buscar el usuario en la base de datos
+        const user = await User.findOne({ _id: idFromSession });
+
+        // Renderiza la plantilla 'profile' con los datos del usuario encontrado en la base de datos
+        res.render('profile', {
+            title: 'My profile',
+            user: user // Aquí debes pasar el usuario encontrado en la base de datos
+        });
+    } catch (error) {
+        console.error('Error al buscar el usuario en la base de datos:', error);
+        // Maneja el error adecuadamente, por ejemplo, redirigiendo a una página de error o mostrando un mensaje de error al usuario
+        res.status(500).send('Error interno del servidor');
+    }
+});
 
 module.exports = router

@@ -14,6 +14,7 @@ const productsRouter = require('./routes/products.router')
 const cartRouter = require('./routes/cart.router')
 
 const app = express();
+const middleware = require('./middlewares/auth.middleware');
 
 
 app.engine('handlebars', handlebars.engine())
