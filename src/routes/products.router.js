@@ -1,5 +1,7 @@
 const { Router } = require('express'); 
 const router = Router(); 
+// const productManager = require('../dao/dbManagers/productManager');
+const ProductManager = require('../dao/dbManagers/productManager');
 
 router.get('/', async (req, res) => {
     try {
@@ -9,8 +11,8 @@ router.get('/', async (req, res) => {
         const category = req.query.category;
         const availability = req.query.availability;
 
-        const productManager = req.app.get('productManager');
-        const products = await productManager.getProducts(page, limit, sort, category, availability);
+        const pManager = new ProductManager();
+        const products = await pManager.getProducts(page, limit, sort, category, availability);
 
         res.render('products', {
             products,

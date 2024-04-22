@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo'); 
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const ProductManager = require('./dao/dbManagers/productManager')
+const cartManager = require('./dao/dbManagers/CartManager')
 
 const { dbName, mongoUrl } = require('./dbConfig')
 const sessionMiddleware = require('./session/mongoStorage')
@@ -15,6 +17,7 @@ const cartRouter = require('./routes/cart.router')
 
 const app = express();
 const middleware = require('./middlewares/auth.middleware');
+const CartManager = require('./dao/dbManagers/CartManager');
 
 
 app.engine('handlebars', handlebars.engine())
@@ -46,6 +49,9 @@ app.use('/api/cart', cartRouter);
 
 app.use('/api/sessions', require('./routes/session.router'))
 app.use('/', require('./routes/views.router'))
+
+app.set('productManager', new ProductManager());
+app.set('cartManager', new CartManager());
 
 
 const server = http.createServer(app);
