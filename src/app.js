@@ -6,7 +6,9 @@ const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
+const { dbName, mongoUrl } = require('./dbConfig')
 const sessionMiddleware = require('./session/mongoStorage')
+
 const createProductRouter = require('./routes/createProduct.router');
 const productsRouter = require('./routes/products.router')
 const cartRouter = require('./routes/cart.router')
@@ -39,7 +41,10 @@ app.use(session({
 
 app.use('/api/createProduct', createProductRouter);
 app.use('/api/products', productsRouter); 
-app.use('/api/cart', cartRouter); 
+app.use('/api/cart', cartRouter);
+
+app.use('/api/sessions', require('./routes/session.router'))
+app.use('/', require('./routes/views.router'))
 
 
 const server = http.createServer(app);
@@ -47,8 +52,8 @@ const PORT = process.env.PORT || 8080;
 
 const main = async () => {
     try {
-        await mongoose.connect('mongodb+srv://andresmangold:andresPass@cluster0.hrz9nqj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-            dbName: 'ecommerce'
+        await mongoose.connect(mongoUrl, {
+            dbName: dbName
         });
 
         server.listen(PORT, () => {
