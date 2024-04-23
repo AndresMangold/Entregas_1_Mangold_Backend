@@ -1,7 +1,8 @@
 const { Router } = require('express'); 
-const router = Router(); 
+const router = Router();
+const { userisLoggedIn } = require('../middlewares/auth.middleware') 
 
-router.get('/', async (_, res) => {
+router.get('/', userisLoggedIn, async (_, res) => {
     res.render('createProduct', {
         titlePage: 'Agregar Producto',
         style: ['styles.css'],

@@ -1,9 +1,9 @@
 const { Router } = require('express'); 
 const router = Router(); 
-// const productManager = require('../dao/dbManagers/productManager');
 const ProductManager = require('../dao/dbManagers/productManager');
+const { userisLoggedIn } = require('../middlewares/auth.middleware')
 
-router.get('/', async (req, res) => {
+router.get('/', userisLoggedIn, async (req, res) => {
     try {
         const page = req.query.page || 1;
         const limit = req.query.limit || 10;

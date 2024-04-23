@@ -1,8 +1,9 @@
 const { Router } = require('express'); 
-const router = Router(); 
+const router = Router();
+const { userisLoggedIn } = require('../middlewares/auth.middleware') 
 
 
-router.get('/', async (req, res) => {
+router.get('/', userisLoggedIn, async (req, res) => {
     try {
         const cartManager = req.app.get('cartManager');
         const carts = await cartManager.getCarts(); 
