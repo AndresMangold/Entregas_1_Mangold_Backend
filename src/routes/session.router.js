@@ -33,22 +33,27 @@ router.post('/login', userIsNotLoggedIn, async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        let welcomeMessage = ''; 
+
         if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
             req.session.user = { email, role: 'admin' };
-            res.redirect('/api/products');
+            welcomeMessage = '¡Bienvenido!';
         } else {
             const user = await User.findOne({ email, password });
             if (!user) {
                 return res.status(400).json({ error: 'Email o contraseña incorrectas.' });
             }
             req.session.user = user; 
-            res.redirect('/api/products');
+            welcomeMessage = `¡Bienvenido, ${user.firstName}!`;
         }
+
+        res.redirect(`/api/products?welcome=${encodeURIComponent(welcomeMessage)}`);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
+
 
 router.post('/register', userIsNotLoggedIn, async (req, res) => {
     const { firstName, lastName, email, age, password } = req.body;

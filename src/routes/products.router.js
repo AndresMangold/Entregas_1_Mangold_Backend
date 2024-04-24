@@ -14,17 +14,22 @@ router.get('/', userisLoggedIn, async (req, res) => {
         const pManager = new ProductManager();
         const products = await pManager.getProducts(page, limit, sort, category, availability);
 
+        const welcomeMessage = req.query.welcome ? decodeURIComponent(req.query.welcome) : '';
+
         res.render('products', {
             products,
             titlePage: 'Productos',
             style: ['styles.css'],
-            isLoggedIn: req.session.user !== undefined 
+            isLoggedIn: req.session.user !== undefined,
+            welcomeMessage: welcomeMessage
         });
 
-    } catch {
-        res.status(500).json({ Error: 'Error al cargar los productos' }); 
-    };
+    } catch (error) {
+        console.error('Error al cargar los productos:', error);
+        res.status(500).json({ Error: 'Error interno del servidor' });
+    }
 });
+
 
 router.post('/:pid', async (req, res) => {
     try {
