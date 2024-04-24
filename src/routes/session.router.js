@@ -78,7 +78,6 @@ router.post('/register', userIsNotLoggedIn, async (req, res) => {
 router.get('/profile', userisLoggedIn, async (req, res) => {
     try {
         const idFromSession = req.session.user._id;
-        // const user = await User.findOne({ _id: idFromSession });
 
         res.render('profile', {
             title: 'My profile',

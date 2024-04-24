@@ -536,3 +536,50 @@ h2 {
 .register-button:hover {
     background-color: #45a049;
 }
+
+.registration-form {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.registration-form form {
+    width: 20rem;
+    background-color: #afafaf;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    width: 100%;
+    display: block;
+    color: white;
+}
+
+.form-group input {
+    width: calc(100% - 20px); /* Adjust width for input */
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #000;
+}
+
+.register-button {
+    width: auto; /* Cambiado a tamaño automático */
+    padding: 10px 20px; /* Ajusta el padding según sea necesario */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.register-button:hover {
+    background-color: #45a049;
+}
+
+
+
