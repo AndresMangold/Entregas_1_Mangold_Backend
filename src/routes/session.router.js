@@ -1,44 +1,62 @@
 const { Router } = require('express');
 const User = require('../dao/models/user.model');
+const { userisLoggedIn, userIsNotLoggedIn } = require('../middlewares/auth.middleware');
 
 const router = Router();
 
-router.post('/login', async (req, res) => {
+router.get('/', userIsNotLoggedIn, (req, res) => {
+    const isLoggedIn = ![null, undefined].includes(req.session.user);
+
+    res.render('index', {
+        title: 'Home',
+        isLoggedIn,
+        isNotLoggedIn: !isLoggedIn, 
+    });
+});
+
+router.get('/login', userIsNotLoggedIn, (_, res) => {
+    res.render('login', {
+        title: 'Login',
+        style: ['styles.css'],
+    });
+});
+
+router.get('/register', userIsNotLoggedIn, (_, res) => { 
+    res.render('register', {
+        title: 'Register'
+    });
+});
+
+router.post('/login', userIsNotLoggedIn, async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Verificar si el usuario existe en la base de datos
         const user = await User.findOne({ email, password });
 
         if (!user) {
-            // Si el usuario no existe, redirigir al usuario a la página de registro
-            return res.redirect('/register');
+            return res.status(400).json({ error: 'Email o contraseña incorrectas.' });
         }
 
-        // Verificar si el usuario es administrador
         if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-            // Si es administrador, asignar el rol "admin"
             req.session.user = { email, role: 'admin' };
         } else {
-            // Si no es administrador, asignar el rol "user"
-            req.session.user = { email, role: 'user' };
+            req.session.user = user; 
+            // { email, role: 'user', _id: user._id };
         }
 
-        res.redirect('/');
+        res.redirect('/api/products');
     } catch (err) {
-        console.log(err);
-        res.status(400).send('Error in login!');
+        console.error(err);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', userIsNotLoggedIn, async (req, res) => {
     const { firstName, lastName, email, age, password } = req.body;
 
     try {
-        // Todos los usuarios, excepto los administradores, tendrán el rol "user" por defecto
         const role = email === 'adminCoder@coder.com' ? 'admin' : 'user';
 
-        // Crear el usuario con el rol correspondiente
         const user = await User.create({
             firstName,
             lastName,
@@ -48,24 +66,37 @@ router.post('/register', async (req, res) => {
             role
         });
 
-        res.redirect('/');
+        res.redirect('/api/products');
     } catch (err) {
-        console.log(err);
-        res.status(400).send('Error creating user!');
+        console.error(err);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
 
-router.get('/logout', (req, res) => {
-    // Destruir la sesión
+router.get('/profile', userisLoggedIn, async (req, res) => {
+    try {
+        const idFromSession = req.session.user._id;
+        // const user = await User.findOne({ _id: idFromSession });
+        console.log("user:", req.session)
+
+        res.render('profile', {
+            title: 'My profile',
+            user: req.session.user
+        });
+    } catch (error) {
+        console.error('Error al buscar el usuario en la base de datos:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+router.get('/logout', userisLoggedIn, (req, res) => {
     req.session.destroy(err => {
         if (err) {
             console.error('Error al destruir la sesión:', err);
             return res.status(500).send('Error interno del servidor');
         }
-        // Redirigir al usuario a la vista de login después de cerrar sesión
         res.redirect('/login');
     });
 });
-
 
 module.exports = router;

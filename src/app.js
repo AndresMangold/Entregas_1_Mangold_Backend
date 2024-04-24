@@ -6,7 +6,6 @@ const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const ProductManager = require('./dao/dbManagers/productManager')
-const cartManager = require('./dao/dbManagers/CartManager')
 
 const { dbName, mongoUrl } = require('./dbConfig')
 const sessionMiddleware = require('./session/mongoStorage')
@@ -18,7 +17,7 @@ const cartRouter = require('./routes/cart.router')
 const app = express();
 const middleware = require('./middlewares/auth.middleware');
 const CartManager = require('./dao/dbManagers/CartManager');
-
+const sessionRouter = require('./routes/session.router'); 
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', `${__dirname}/views`)
@@ -43,11 +42,11 @@ app.use(session({
 }));
 
 
+app.use('/api', sessionRouter);
+
 app.use('/api/createProduct', createProductRouter);
 app.use('/api/products', productsRouter); 
 app.use('/api/cart', cartRouter);
-
-app.use('/api/sessions', require('./routes/session.router'))
 app.use('/', require('./routes/views.router'))
 
 app.set('productManager', new ProductManager());

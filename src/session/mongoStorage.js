@@ -6,7 +6,7 @@ const { dbName, mongoUrl } = require('../dbConfig');
 const storage = MongoStore.create({
     dbName,
     mongoUrl,
-    ttl: 60
+    ttl: 90
 })
 
 module.exports = session({

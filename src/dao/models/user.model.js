@@ -4,6 +4,7 @@ const schema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     age: Number,
+    role: String,
     email: {
         type: String,
         unique: true

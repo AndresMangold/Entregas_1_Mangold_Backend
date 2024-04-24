@@ -18,6 +18,7 @@ router.get('/', userisLoggedIn, async (req, res) => {
             products,
             titlePage: 'Productos',
             style: ['styles.css'],
+            isLoggedIn: req.session.user !== undefined 
         });
 
     } catch {

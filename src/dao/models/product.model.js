@@ -30,12 +30,6 @@ const schema = new mongoose.Schema({
         required: true
     },
 
-    // status: {
-    //     type: Boolean,
-    //     enum: [true, false],
-    //     default: true
-    // },
-
     stock: {
         type: Number,
         required: true,

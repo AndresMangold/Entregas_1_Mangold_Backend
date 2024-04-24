@@ -41,4 +41,14 @@ router.get('/profile', userisLoggedIn, async (req, res) => {
     }
 });
 
+router.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error al destruir la sesión:', err);
+            return res.status(500).send('Error interno del servidor');
+        }
+        res.redirect('/login');
+    });
+});
+
 module.exports = router;

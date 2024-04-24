@@ -1,5 +1,5 @@
 module.exports = {
-    secret: 'adminCod3r123',
+    secret: 'CookieAnd12',
     resave: true,
     saveUninitialized: true
 }
