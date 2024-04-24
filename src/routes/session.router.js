@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const User = require('../dao/models/user.model');
 const { userisLoggedIn, userIsNotLoggedIn } = require('../middlewares/auth.middleware');
+const swal = require('sweetalert');
 
 const router = Router();
 
@@ -98,5 +99,6 @@ router.get('/logout', userisLoggedIn, (req, res) => {
         res.redirect('/login');
     });
 });
+
 
 module.exports = router;

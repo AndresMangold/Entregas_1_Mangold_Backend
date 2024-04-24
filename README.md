@@ -1,8 +1,11 @@
-# PreEntrega_2_Mangold_Backend
 
-# PREENTREGA nº 2 del curso de Programación Backend.
+# Desafío Login del curso de Programación Backend.
 
 Este proyecto simula un servidor con persistencia de archivos alojado MONGODB y donde es posible visualizar productos y añadirlos a un carrito de compras.
+
+Se agregó para esta entrega semanal: un pantalla de login que protege el acceso a los endpoints de productos y de la visualización del carrito. Ambas visualizaciones: la de productos
+y la del carrito sólo la pueden ver usuarios con el role: user. El rol de "admin" permite acceder además a la ruta de agregar producto, esta ruta está protegida para los users.
+Se puede acceder también a un endpoint de perfil para ver la información de usuario y existe un logout para destruir la sesión.
 
 Se podrá consultar productos disponibles utilizando filtros, paginación y ordenamientos.
 
@@ -23,6 +26,9 @@ Se podrá consultar productos disponibles utilizando filtros, paginación y orde
 - Socket.io
 - Mongoose
 - Mongoose Paginate
+- Session-file-store
+- Connect-mongo
+- Cookie-parser
 
 # Métodos de Postman para correr la API:
 
