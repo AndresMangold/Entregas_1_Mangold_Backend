@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const User = require('../dao/models/user.model');
 const { userisLoggedIn, userIsNotLoggedIn } = require('../middlewares/auth.middleware');
-const swal = require('sweetalert');
 
 const router = Router();
 
@@ -34,20 +33,17 @@ router.post('/login', userIsNotLoggedIn, async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await User.findOne({ email, password });
-
-        if (!user) {
-            return res.status(400).json({ error: 'Email o contraseña incorrectas.' });
-        }
-
         if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
             req.session.user = { email, role: 'admin' };
+            res.redirect('/api/products');
         } else {
+            const user = await User.findOne({ email, password });
+            if (!user) {
+                return res.status(400).json({ error: 'Email o contraseña incorrectas.' });
+            }
             req.session.user = user; 
-            // { email, role: 'user', _id: user._id };
+            res.redirect('/api/products');
         }
-
-        res.redirect('/api/products');
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Error interno del servidor' });
@@ -99,6 +95,5 @@ router.get('/logout', userisLoggedIn, (req, res) => {
         res.redirect('/login');
     });
 });
-
 
 module.exports = router;
