@@ -24,11 +24,11 @@ router.post('/', userIsAdmin, async (req, res) => {
 
 router.use((err, req, res, next) => {
     if (err.message === 'User is not an admin') {
-        alert("Debes ser Admin para ingresar aquí");
-        res.redirect('/');
+        res.status(403).send("Debes ser administrador para ingresar aquí");
     } else {
         next(err);
     }
 });
+
 
 module.exports = router;
