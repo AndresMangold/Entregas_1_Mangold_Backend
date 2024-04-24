@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
 
     res.render('index', {
         title: 'Home',
+        style: ['styles.css'],
         isLoggedIn,
         isNotLoggedIn: !isLoggedIn, 
     });
@@ -16,13 +17,15 @@ router.get('/', (req, res) => {
 
 router.get('/login', userIsNotLoggedIn, (_, res) => {
     res.render('login', {
-        title: 'Login'
+        title: 'Login',
+        style: ['styles.css'],
     });
 });
 
 router.get('/register', (_, res) => { 
     res.render('register', {
-        title: 'Register'
+        title: 'Register',
+        style: ['styles.css'],
     });
 });
 
@@ -33,6 +36,7 @@ router.get('/profile', userisLoggedIn, async (req, res) => {
 
         res.render('profile', {
             title: 'My profile',
+            style: ['styles.css'],
             user: user
         });
     } catch (error) {

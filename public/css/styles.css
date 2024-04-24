@@ -374,6 +374,9 @@ h2 {
 
 .login-page {
     margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .login-page .home-links {
@@ -422,4 +425,114 @@ h2 {
 
 .login-page .register-link {
     margin-top: 1rem;
+}
+
+.profile-info {
+    color: white;
+    font-size: 16px;
+    margin-top: 3rem;
+    text-align: center; 
+}
+
+.profile-info h1,
+.profile-info h2,
+.profile-info div {
+    margin-bottom: 1rem;
+}
+
+.profile-info button,
+.profile-info a {
+    display: inline-block;
+    margin-top: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.profile-info button.logout-button {
+    background-color: #FF5733; 
+}
+
+.profile-info button:hover,
+.profile-info a:hover {
+    background-color: #45a049;
+}
+
+.form-container {
+    margin-bottom: 2rem;
+}
+
+.form {
+    margin: 0 auto;
+    width: 20rem;
+    background-color: #afafaf;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid rgb(59, 57, 57);
+    padding: 1rem;
+}
+
+.form form label,
+.form form input,
+.form form select,
+.form form button {
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+
+.form .input-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.form .input-row label {
+    width: 30%;
+}
+
+.form .input-row input {
+    width: 70%;
+}
+
+.form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 1rem;
+    background-color: #3bfa34;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form button:hover {
+    background-color: #36ac00;
+}
+
+.register-link {
+    margin-top: 1rem;
+}
+
+.register-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.register-button:hover {
+    background-color: #45a049;
 }

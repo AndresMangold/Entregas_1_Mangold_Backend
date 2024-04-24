@@ -9,6 +9,7 @@ router.get('/', userIsNotLoggedIn, (req, res) => {
 
     res.render('index', {
         title: 'Home',
+        style: ['styles.css'],
         isLoggedIn,
         isNotLoggedIn: !isLoggedIn, 
     });
@@ -23,7 +24,8 @@ router.get('/login', userIsNotLoggedIn, (_, res) => {
 
 router.get('/register', userIsNotLoggedIn, (_, res) => { 
     res.render('register', {
-        title: 'Register'
+        title: 'Register',
+        style: ['styles.css'],
     });
 });
 
@@ -77,7 +79,6 @@ router.get('/profile', userisLoggedIn, async (req, res) => {
     try {
         const idFromSession = req.session.user._id;
         // const user = await User.findOne({ _id: idFromSession });
-        console.log("user:", req.session)
 
         res.render('profile', {
             title: 'My profile',
