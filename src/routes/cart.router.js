@@ -13,13 +13,11 @@ router.get('/', userisLoggedIn, async (req, res) => {
             quantity: c.products.length
         }));
 
-        const isLoggedIn = req.user ? true : false;
-
         res.status(200).render('carts', {
             carts: cartsData,
             titlePage: 'Carritos',
             style: ['styles.css'],
-            isLoggedIn: isLoggedIn 
+            isLoggedIn: req.session.user !== undefined, 
         }); 
     } catch {
         res.status(500).json({ error: 'No se pudo conectar con los carritos' }); 

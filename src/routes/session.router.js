@@ -83,7 +83,8 @@ router.get('/profile', userisLoggedIn, async (req, res) => {
 
         res.render('profile', {
             title: 'My profile',
-            user: req.session.user
+            user: req.session.user,
+            isLoggedIn: req.session.user !== undefined,
         });
     } catch (error) {
         console.error('Error al buscar el usuario en la base de datos:', error);
