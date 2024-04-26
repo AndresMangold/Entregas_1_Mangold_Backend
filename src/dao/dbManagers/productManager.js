@@ -83,7 +83,7 @@ class ProductManager {
         }
     }
 
-    async addProduct(title, description, price, thumbnail, code, status, stock, category) {
+    async addProduct(title, description, price, thumbnail, code, stock, category) {
 
         const invalidOptions = isNaN(+price) || +price <= 0 || isNaN(+stock) || +stock < 0;
 
@@ -91,13 +91,7 @@ class ProductManager {
             throw new Error('Error al validar los datos');
         };
 
-        const finalThumbnail = thumbnail ? thumbnail : 'No image';
-
-        if (typeof status === 'undefined' || status === true || status === 'true') {
-            status = true;
-        } else {
-            status = false;
-        }
+        const finalThumbnail = thumbnail ? thumbnail : 'Sin Imagen';
 
         try {
             await Products.create({
@@ -106,18 +100,21 @@ class ProductManager {
                 price,
                 thumbnail: finalThumbnail,
                 code,
-                status,
                 stock,
                 category
             });
 
             console.log('Producto agregado correctamente');
         } catch (error) {
-            console.error('Error al agregar el producto desde Base de Datos:', error);
-            throw new Error('Error al agregar el producto desde Base de Datos');
+            console.error('Error al agregar el producto desde DB:', error);
+            throw new Error('Error al agregar el producto desde DB');
         }
     }
-
+    
+    
+    
+    
+    
 
     async deleteProduct(productId) {
         try {

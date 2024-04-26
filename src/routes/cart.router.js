@@ -11,12 +11,15 @@ router.get('/', userisLoggedIn, async (req, res) => {
         const cartsData = carts.map(c => ({
             id: c.id,
             quantity: c.products.length
-        }))
+        }));
+
+        const isLoggedIn = req.user ? true : false;
 
         res.status(200).render('carts', {
             carts: cartsData,
             titlePage: 'Carritos',
             style: ['styles.css'],
+            isLoggedIn: isLoggedIn 
         }); 
     } catch {
         res.status(500).json({ error: 'No se pudo conectar con los carritos' }); 
@@ -24,11 +27,11 @@ router.get('/', userisLoggedIn, async (req, res) => {
 });
 
 
-router.get('/:cid', async (req, res) => {
+router.get('/:cid', userisLoggedIn, async (req, res) => {
     try {
-        const cartId = req.params.cid; 
+        const cartId = req.params.cid;
         const cartManager = req.app.get('cartManager');
-        const cart = await cartManager.getCartById(cartId); 
+        const cart = await cartManager.getCartById(cartId);
 
         const cartData = {
             id: cart.id,
@@ -40,18 +43,21 @@ router.get('/:cid', async (req, res) => {
             }))
         };
 
+        const isLoggedIn = req.user ? true : false;
+
         res.status(200).render('cart', {
             cart: cartData,
             titlePage: 'Carrito',
             style: ['styles.css'],
-        }); 
-
+            isLoggedIn: isLoggedIn
+        });
     } catch (err) {
-        res.status(500).json({ Error: err.message }); 
+        res.status(500).json({ Error: err.message });
     }
 });
 
-router.put('/:cid', async (req, res) => {
+
+router.put('/:cid', userisLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid; 
         const { products } = req.body;
@@ -63,7 +69,8 @@ router.put('/:cid', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+
+router.post('/', userisLoggedIn, async (req, res) => {
     try {
         const cartManager = req.app.get('cartManager');
         const cart = await cartManager.addCart(); 
@@ -73,7 +80,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.post('/:cid/product/:pid', async (req, res) => {
+router.post('/:cid/product/:pid', userisLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid; 
         const productId = req.params.pid; 
@@ -86,7 +93,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
     }
 });
 
-router.put('/:cid/product/:pid', async (req, res) => {
+router.put('/:cid/product/:pid', userisLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid; 
         const productId = req.params.pid; 
@@ -100,7 +107,7 @@ router.put('/:cid/product/:pid', async (req, res) => {
 });
 
 
-router.delete('/:cid/product/:pid', async (req, res) => {
+router.delete('/:cid/product/:pid', userisLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid; 
         const productId = req.params.pid; 
@@ -113,7 +120,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 });
 
 
-router.delete('/:cid', async (req, res) => {
+router.delete('/:cid', userisLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid;
         const cartManager = req.app.get('cartManager');

@@ -6,7 +6,7 @@ const { userisLoggedIn } = require('../middlewares/auth.middleware')
 router.get('/', userisLoggedIn, async (req, res) => {
     try {
         const page = req.query.page || 1;
-        const limit = req.query.limit || 10;
+        const limit = req.query.limit || 12;
         const sort = req.query.sort;
         const category = req.query.category;
         const availability = req.query.availability;
@@ -86,9 +86,9 @@ router.put('/:pid', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const { title, description, price, thumbnail, code, status, stock } = req.body; 
+        const { title, description, price, thumbnail, code, stock, category } = req.body; 
         const productManager = req.app.get('productManager');
-        await productManager.addProduct(title, description, price, thumbnail, code, status, stock); 
+        await productManager.addProduct(title, description, price, thumbnail, code, stock, category); 
         res.status(301).redirect('/api/products'); 
     } catch (error) {
         res.status(500).json({ Error: error.message }); 

@@ -7,6 +7,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const ProductManager = require('./dao/dbManagers/productManager')
 
+
 const { dbName, mongoUrl } = require('./dbConfig')
 const sessionMiddleware = require('./session/mongoStorage')
 
@@ -28,6 +29,7 @@ app.use(sessionMiddleware)
 app.use(express.urlencoded({ extended: true })); 
 app.use(express.json()); 
 app.use(express.static(`${__dirname}/../public`))
+app.use(express.static('public'));
 
 
 app.use(cookieParser());

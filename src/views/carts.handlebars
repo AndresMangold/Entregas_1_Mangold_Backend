@@ -7,7 +7,13 @@
             <p>Tipos de productos: {{quantity}}</p>
             <a href="/api/cart/{{id}}">Ver</a>
         </div>
-        {{/each}}
+    </li>
+    {{/each}}
+    <li>
         <a href="/api/products">Volver</a>
+        {{#if isLoggedIn}}
+            <a href="/api/profile">Perfil</a>
+            <a href="/api/logout">Logout</a>
+        {{/if}}
     </li>
 </ul>
