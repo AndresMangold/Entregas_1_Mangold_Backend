@@ -1,39 +1,77 @@
 const express = require('express');
 const http = require('http');
-const productsRouter = require('./routes/products.router.js');
-const cartsRouter = require('./routes/cart.router.js');
 const handlebars = require('express-handlebars');
-const { Server } = require('socket.io');
-const homeRouter = require('./routes/home.router');
-const realTimeProductsRouter = require('./routes/realTimeProducts.router')
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo'); 
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const ProductManager = require('./dao/dbManagers/productManager')
+
+
+const { dbName, mongoUrl } = require('./dbConfig')
+const sessionMiddleware = require('./session/mongoStorage')
+
+const createProductRouter = require('./routes/createProduct.router');
+const productsRouter = require('./routes/products.router')
+const cartRouter = require('./routes/cart.router')
 
 const app = express();
-const server = http.createServer(app); 
+const middleware = require('./middlewares/auth.middleware');
+const CartManager = require('./dao/dbManagers/CartManager');
+const sessionRouter = require('./routes/session.router'); 
 
-app.engine('handlebars', handlebars.engine());
-app.set('views', `${__dirname}/views`);
-app.set('view engine', 'handlebars');
+app.engine('handlebars', handlebars.engine())
+app.set('views', `${__dirname}/views`)
+app.set('view engine', 'handlebars')
 
-app.use(express.static(`${__dirname}/../public`));
+app.use(sessionMiddleware)
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json()); 
+app.use(express.static(`${__dirname}/../public`))
+app.use(express.static('public'));
 
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
 
-app.use('/api/home', homeRouter)
-app.use('/api/realTimeProducts', realTimeProductsRouter)
+app.use(cookieParser());
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://andresmangold:andresPass@cluster0.hrz9nqj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+        ttl: 15,
+    }),
+    secret: "adminCod3r123",
+    resave: false,
+    saveUninitialized: false
+}));
 
+
+app.use('/api', sessionRouter);
+
+app.use('/api/createProduct', createProductRouter);
+app.use('/api/products', productsRouter); 
+app.use('/api/cart', cartRouter);
+app.use('/', require('./routes/views.router'))
+
+app.set('productManager', new ProductManager());
+app.set('cartManager', new CartManager());
+
+
+const server = http.createServer(app);
 const PORT = process.env.PORT || 8080;
 
-const wsServer = new Server(server); 
-app.set('ws', wsServer)
+const main = async () => {
+    try {
+        await mongoose.connect(mongoUrl, {
+            dbName: dbName
+        });
 
-wsServer.on('connection', (socket) => {
-    console.log('Nuevo cliente conectado via WebSocket');
-})
+        server.listen(PORT, () => {
+            console.log('Servidor cargado!');
+            console.log(`http://localhost:${PORT}/api/products`);
+        });
 
-server.listen(PORT, () => {
-    console.log(`Servidor cargado en el puerto ${PORT}!`);
-});
+    } catch (error) {
+        console.error('Error al conectar con la base de datos:', error);
+    }
+};
+
+main();

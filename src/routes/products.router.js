@@ -1,97 +1,110 @@
-const { Router } = require('express');
-const ProductManager = require('../productManager');
+const { Router } = require('express'); 
+const router = Router(); 
+const ProductManager = require('../dao/dbManagers/productManager');
+const { userisLoggedIn } = require('../middlewares/auth.middleware')
 
-const router = Router();
-
-const productManager = new ProductManager(`${__dirname}/../../assets/products.json`);
-
-productManager.init().catch(error => {
-    console.error('Error al inicializar ProductManager:', error);
-});
-
-router.get('/', async function(req, res) {
+router.get('/', userisLoggedIn, async (req, res) => {
     try {
-        const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
-        const products = await productManager.getProducts(limit);
-        res.json(products);
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 12;
+        const sort = req.query.sort;
+        const category = req.query.category;
+        const availability = req.query.availability;
+
+        const pManager = new ProductManager();
+        const products = await pManager.getProducts(page, limit, sort, category, availability);
+
+        const welcomeMessage = req.query.welcome ? decodeURIComponent(req.query.welcome) : '';
+
+        res.render('products', {
+            products,
+            titlePage: 'Productos',
+            style: ['styles.css'],
+            isLoggedIn: req.session.user !== undefined,
+            welcomeMessage: welcomeMessage
+        });
+
     } catch (error) {
-        console.error('Error al obtener los productos:', error);
-        res.status(500).send('Error interno del servidor');
+        console.error('Error al cargar los productos:', error);
+        res.status(500).json({ Error: 'Error interno del servidor' });
     }
 });
 
-router.post('/', async function(req, res) {
+
+router.post('/:pid', async (req, res) => {
     try {
-        const { title, description, price, thumbnail, code, stock } = req.body;
-        
-        if (!title || !description || !price || !thumbnail || !code || !stock) {
-            return res.status(400).json({ message: "Todos los campos son requeridos" });
-        }
-
-        await productManager.addProduct(title, description, price, thumbnail, code, stock);
-
-        res.status(201).json({ message: 'Producto agregado correctamente' });
-    } catch (error) {
-        console.error('Error al agregar el producto:', error);
-        res.status(500).json({ message: 'Error interno del servidor' });
+        const productId = req.params.pid;
+        const cartId = '661eeec55d8db44e2eb4053f'
+        const cartManager = req.app.get('cartManager');
+        await cartManager.addProductToCart(productId, cartId)
+        res.status(301).redirect('/api/products');
+    } catch (err) {
+        res.status(500).json({ Error: err.message })
     }
 });
 
-router.get('/:pid', function(req, res) {
+router.get('/:pid', userisLoggedIn, async (req, res) => {
     try {
-        const productId = parseInt(req.params.pid);
-        const product = productManager.getProductById(productId);
-        if (product) {
-            res.json(product);
-        } else {
-            res.status(404).send('Producto no encontrado');
-        }
-    } catch (error) {
-        console.error('Error al obtener el producto:', error);
-        res.status(500).send('Error interno del servidor');
+
+        const productId = req.params.pid; 
+        const productManager = req.app.get('productManager');
+        const product = await productManager.getProductById(productId); 
+
+        const productData = {
+            title: product.title,
+            thumbnail: product.thumbnail,
+            description: product.description,
+            price: product.price,
+            stock: product.stock,
+            code: product.code,
+            id: product.id
+        };
+
+        res.status(200).render('product', {
+            product: [productData],
+            titlePage: `Productos | ${product.title}`,
+            style: ['styles.css'],
+            isLoggedIn: req.session.user !== undefined,
+        });
+
+
+    } catch (err) {
+        res.status(500).json({ Error: err.message }); 
     }
 });
 
-router.post('/', async function(req, res) {
+
+router.put('/:pid', async (req, res) => {
     try {
-        const newProduct = req.body;
-        const productId = await productManager.addProduct(newProduct);
-        res.status(201).json({ id: productId, ...newProduct });
-    } catch (error) {
-        console.error('Error al agregar el producto:', error);
-        res.status(500).send('Error interno del servidor');
+        const productId = req.params.pid; 
+        const productManager = req.app.get('productManager');
+        await productManager.updateProduct(productId, req.body); 
+        res.status(200).json({ message: 'Producto actualizado' }); 
+    } catch (err) {
+        res.status(500).json({ error: 'Error al actualizar el producto' }); 
     }
 });
 
-router.put('/:pid', async function(req, res) {
+router.post('/', async (req, res) => {
     try {
-        const productId = parseInt(req.params.pid);
-        const updatedProduct = req.body;
-        const success = await productManager.updateProduct(productId, updatedProduct);
-        if (success) {
-            res.json({ message: 'Producto actualizado correctamente' });
-        } else {
-            res.status(404).send('Producto no encontrado');
-        }
+        const { title, description, price, thumbnail, code, stock, category } = req.body; 
+        const productManager = req.app.get('productManager');
+        await productManager.addProduct(title, description, price, thumbnail, code, stock, category); 
+        res.status(301).redirect('/api/products'); 
     } catch (error) {
-        console.error('Error al actualizar el producto:', error);
-        res.status(500).send('Error interno del servidor');
+        res.status(500).json({ Error: error.message }); 
     }
 });
 
-router.delete('/:pid', async function(req, res) {
+router.delete('/:pid', async (req, res) => {
     try {
-        const productId = parseInt(req.params.pid);
-        const success = await productManager.deleteProduct(productId);
-        if (success) {
-            res.json({ message: 'Producto eliminado correctamente' });
-        } else {
-            res.status(404).send('Producto no encontrado');
-        }
-    } catch (error) {
-        console.error('Error al eliminar el producto:', error);
-        res.status(500).send('Error interno del servidor');
+        const productId = req.params.pid; 
+        const productManager = req.app.get('productManager');
+        await productManager.deleteProduct(productId); 
+        res.status(301).redirect('/api/products'); 
+    } catch (err) {
+        res.status(500).json({ Error: err.message }); 
     }
 });
 
-module.exports = router;
+module.exports = router; 

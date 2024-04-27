@@ -13,11 +13,12 @@
         <h4 >{{title}}</h4>
         <img class="product-image" src="{{thumbnail}}" alt="imagen de {{title}}">
         <div class="product__info">
-            <p>{{description}}</p>
+            <p>Descripción: {{description}}</p>
             <p>Precio: {{price}}</p>
             <p>Stock: {{stock}}</p>
             <p>Código: {{code}}</p>
         </div>
+        <button class="add-to-cart-button" data-product-id="{{id}}">Agregar al carrito</button>
     </div>
     {{/each}}
 </div>

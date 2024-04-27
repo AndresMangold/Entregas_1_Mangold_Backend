@@ -1,6 +1,7 @@
 const fs = require('fs');
-const ProductManager = require('./productManager');
-const manager = new ProductManager(`${__dirname}/../assets/products.json`);
+const ProductManager = require('./ProductManager');
+const manager = new ProductManager(`${__dirname}/../../../assets/products.json`);
+
 
 class CartManager {
     #carts;
@@ -40,7 +41,6 @@ class CartManager {
         }
     }
 
-
     #getNewId() {
         return this.#lastCartId++;
     }
@@ -57,8 +57,11 @@ class CartManager {
 
     async addCart() {
         try {
-            const cart = { id: this.#getNewId(), products: [] }
+
+            const cart = { id: parseInt(this.#getNewId()), products: [] }
+
             this.#carts.push(cart);
+
             await this.#saveFile();
             console.log('Nuevo carrito creado')
         } catch {
@@ -66,48 +69,45 @@ class CartManager {
         }
     }
 
-    async createCart() {
-        try {
-            const cart = { id: this.#getNewId(), products: [] };
-            this.#carts.push(cart);
-            await this.#saveFile();
-            console.log('Nuevo carrito creado');
-            return cart.id;
-        } catch (error) {
-            console.error('Error al crear el carrito:', error);
-            throw new Error('Hubo un error al generar el carrito');
-        }
-    }
-
     async getCartById(cartId) {
-        const existingCarts = await this.getCarts();
-        const foundCart = existingCarts.find(cart => cart.id === cartId);
-        if (foundCart) {
-            return foundCart;
+
+        const numericCartId = parseInt(cartId)
+        const existingCart = await this.getCarts();
+        const filterCartById = existingCart.find(c => c.id === numericCartId);
+        if (filterCartById) {
+            return filterCartById;
         } else {
             throw new Error('Not Found: No existe el ID de carrito');
         }
-    }        
+    }
 
     async addProductToCart(productId, cartId) {
         try {
-            const product = await manager.getProductById(productId);
-            const cart = await this.getCartById(cartId);
+            const numericProductId = parseInt(productId)
+            const product = await manager.getProductById(numericProductId);
 
-            const existingProduct = cart.products.find(p => p.id === productId);
+            const numericCartId = parseInt(cartId)
+            const cart = await this.getCartById(numericCartId);
+
+            const existingProduct = cart.products.find(p => p.id === numericProductId);
 
             if (existingProduct) {
                 existingProduct.quantity += 1;
             } else {
                 const productToAdd = { id: product.id, quantity: 1 };
+
                 cart.products.push(productToAdd);
             }
 
             const updatedCarts = await this.getCarts();
-            const indexToUpdate = updatedCarts.findIndex(c => c.id === cartId);
+
+            const indexToUpdate = updatedCarts.findIndex(c => c.id === numericCartId);
             if (indexToUpdate !== -1) {
+
                 updatedCarts[indexToUpdate] = cart;
+
                 this.#carts = updatedCarts;
+
                 await this.#saveFile();
                 console.log('Producto agregado al carrito correctamente');
                 return cart;
@@ -120,8 +120,6 @@ class CartManager {
             throw new Error('Error al cargar el producto al archivo');
         }
     }
-
-
 };
 
 module.exports = CartManager;
