@@ -43,7 +43,7 @@ router.post('/:pid', async (req, res) => {
     }
 });
 
-router.get('/:pid', async (req, res) => {
+router.get('/:pid', userisLoggedIn, async (req, res) => {
     try {
 
         const productId = req.params.pid; 
@@ -64,6 +64,7 @@ router.get('/:pid', async (req, res) => {
             product: [productData],
             titlePage: `Productos | ${product.title}`,
             style: ['styles.css'],
+            isLoggedIn: req.session.user !== undefined,
         });
 
 

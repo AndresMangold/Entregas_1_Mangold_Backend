@@ -561,15 +561,15 @@ h2 {
 }
 
 .form-group input {
-    width: calc(100% - 20px); /* Adjust width for input */
+    width: calc(100% - 20px); 
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid #000;
 }
 
 .register-button {
-    width: auto; /* Cambiado a tamaño automático */
-    padding: 10px 20px; /* Ajusta el padding según sea necesario */
+    width: auto; 
+    padding: 10px 20px; 
     background-color: #4CAF50;
     color: white;
     border: none;

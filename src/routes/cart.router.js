@@ -47,7 +47,7 @@ router.get('/:cid', userisLoggedIn, async (req, res) => {
             cart: cartData,
             titlePage: 'Carrito',
             style: ['styles.css'],
-            isLoggedIn: isLoggedIn
+            isLoggedIn: req.session.user !== undefined,
         });
     } catch (err) {
         res.status(500).json({ Error: err.message });
