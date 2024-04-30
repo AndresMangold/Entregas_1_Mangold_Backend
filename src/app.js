@@ -6,6 +6,7 @@ const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const ProductManager = require('./dao/dbManagers/productManager')
+const passport = require('passport');
 
 
 const { dbName, mongoUrl } = require('./dbConfig')
@@ -31,6 +32,12 @@ app.use(express.json());
 app.use(express.static(`${__dirname}/../public`))
 app.use(express.static('public'));
 
+const inicializeStrategy = require('./config/passport.config');
+const inicializeStrategyWGitH = require('./config/passport-github.config');
+inicializeStrategy();
+inicializeStrategyWGitH();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(cookieParser());
 app.use(session({

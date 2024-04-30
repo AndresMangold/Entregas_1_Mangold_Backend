@@ -15,7 +15,7 @@ Se podrá consultar productos disponibles utilizando filtros, paginación y orde
 - git clone https://github.com/AndresMangold/PreEntrega_1_Mangold_Backend.git
 - npm i
 - nodemon ./src/app.js
-- [localhost://](http://localhost:8080/api/home)
+- [localhost:8080//](http://localhost:8080/api/products)
 
 # Frameworks y librerías utilizadas en este proyecto:
 
