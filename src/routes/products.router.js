@@ -64,7 +64,7 @@ router.get('/:pid', userisLoggedIn, async (req, res) => {
             product: [productData],
             titlePage: `Productos | ${product.title}`,
             style: ['styles.css'],
-            isLoggedIn: req.session.user !== undefined,
+            isLoggedIn: req.session.user !== undefined || req.user !== undefined,
         });
 
 

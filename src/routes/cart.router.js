@@ -17,7 +17,7 @@ router.get('/', userisLoggedIn, async (req, res) => {
             carts: cartsData,
             titlePage: 'Carritos',
             style: ['styles.css'],
-            isLoggedIn: req.session.user !== undefined, 
+            isLoggedIn: req.session.user !== undefined || req.user !== undefined, 
         }); 
     } catch {
         res.status(500).json({ error: 'No se pudo conectar con los carritos' }); 
@@ -47,7 +47,7 @@ router.get('/:cid', userisLoggedIn, async (req, res) => {
             cart: cartData,
             titlePage: 'Carrito',
             style: ['styles.css'],
-            isLoggedIn: req.session.user !== undefined,
+            isLoggedIn: req.session.user !== undefined || req.user !== undefined,
         });
     } catch (err) {
         res.status(500).json({ Error: err.message });

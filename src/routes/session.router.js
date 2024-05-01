@@ -90,12 +90,12 @@ router.post('/register', userIsNotLoggedIn, async (req, res) => {
 
 router.get('/profile', userisLoggedIn, async (req, res) => {
     try {
-        const idFromSession = req.session.user._id;
 
         res.render('profile', {
             title: 'My profile',
-            user: req.session.user,
-            isLoggedIn: req.session.user !== undefined,
+            user: req.session.user, 
+            isLoggedIn: true,
+            
         });
     } catch (error) {
         console.error('Error al buscar el usuario en la base de datos:', error);
@@ -114,7 +114,7 @@ router.get('/logout', userisLoggedIn, (req, res) => {
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 
 router.get('/sessions/githubcallback', passport.authenticate('github',  {
-    successRedirect: '/api/products/',
+    successRedirect: '/api/products',
     failureRedirect: '/login' 
 }));
 
