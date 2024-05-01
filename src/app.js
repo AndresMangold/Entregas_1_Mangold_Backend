@@ -36,8 +36,6 @@ const inicializeStrategy = require('./config/passport.config');
 const inicializeStrategyWGitH = require('./config/passport-github.config');
 inicializeStrategy();
 inicializeStrategyWGitH();
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(cookieParser());
 app.use(session({
@@ -50,6 +48,8 @@ app.use(session({
     saveUninitialized: false
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api', sessionRouter);
 

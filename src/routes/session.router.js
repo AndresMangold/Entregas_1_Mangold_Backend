@@ -113,7 +113,7 @@ router.get('/logout', userisLoggedIn, (req, res) => {
 
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-router.get('api/sessions/githubcallback', passport.authenticate('github', {
+router.get('/api/sessions/githubcallback', passport.authenticate('github', {
     successRedirect: '/',
     failureRedirect: '/login' 
 }));
