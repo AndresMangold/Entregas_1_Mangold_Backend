@@ -16,7 +16,6 @@ const initializePassport = () => {
           if (!isValidPassword(password, user.password)) {
             return done(null, false, { message: 'Contraseña incorrecta.' });
           }
-          console.log("user:", done)
           return done(null, user);
         } catch (err) {
           return done(err);
@@ -29,7 +28,6 @@ const initializePassport = () => {
           const { firstName, lastName, email, age } = req.body;
           try {
               const user = await Users.findOne({ email: username });
-              console.log("usuario", user);
               if (user || username === 'adminCoder@coder.com') {
                   console.log('El usuario ya existe.');
                   return done(null, false);
@@ -51,13 +49,11 @@ const initializePassport = () => {
   ))
 
     passport.serializeUser(function(user, done) {
-      console.log('Serailized: ', user);
       done(null, user._id);
     });
     
     passport.deserializeUser(async function(id, done) {
         try {
-          console.log('Deserialized: ', id)
           const user = await User.findById(id);
           done(null, user)
         } catch (err) {

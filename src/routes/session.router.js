@@ -56,21 +56,19 @@ router.post('/login', userIsNotLoggedIn, (req, res, next) => {
     })(req, res, next);
 });
 
-
-
 router.post('/register', userIsNotLoggedIn, async (req, res) => {
     const { firstName, lastName, email, age, password } = req.body;
 
     try {
-        const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+        const hashedPassword = bcrypt.hashSync('adminCod3r123', bcrypt.genSaltSync(10)); 
 
-        const role = email === 'adminCoder@coder.com' ? 'admin' : 'user';
+        const role = email === 'adminCoder@coder.com' ? 'admin' : 'user'; 
 
         const user = await User.create({
             firstName,
             lastName,
             age: +age,
-            email,
+            email: 'adminCoder@coder.com', 
             password: hashedPassword, 
             role
         });
@@ -80,7 +78,7 @@ router.post('/register', userIsNotLoggedIn, async (req, res) => {
                 console.error(err);
                 res.status(500).json({ error: 'Error interno del servidor' });
             } else {
-                res.redirect('/api/products');
+                res.redirect('/api/login');
             }
         });
     } catch (err) {
@@ -88,6 +86,7 @@ router.post('/register', userIsNotLoggedIn, async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
+
 
 router.get('/profile', userisLoggedIn, async (req, res) => {
     try {
@@ -105,8 +104,18 @@ router.get('/profile', userisLoggedIn, async (req, res) => {
 });
 
 router.get('/logout', userisLoggedIn, (req, res) => {
-    req.logout();
-    res.redirect('/login');
+    req.logout(() => {
+        req.session.destroy(() => { 
+            res.redirect('/login'); 
+        });
+    });
 });
+
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
+
+router.get('api/sessions/githubcallback', passport.authenticate('github', {
+    successRedirect: '/',
+    failureRedirect: '/login' 
+}));
 
 module.exports = router;
