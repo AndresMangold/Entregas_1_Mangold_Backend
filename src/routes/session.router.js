@@ -111,10 +111,23 @@ router.get('/logout', userisLoggedIn, (req, res) => {
     });
 });
 
+
+
+// router.get('/sessions/githubcallback', (req, res) => {
+//     let welcomeMessage = `¡Bienvenido!`;
+
+//     passport.authenticate('github',  {
+//         successRedirect: `/api/products?welcome=${encodeURIComponent(welcomeMessage)}`,
+//         failureRedirect: '/login' 
+//     });
+// });
+
+
+
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 
-router.get('/api/sessions/githubcallback', passport.authenticate('github', {
-    successRedirect: '/',
+router.get('/sessions/githubcallback', passport.authenticate('github',  {
+    successRedirect: '/api/products/',
     failureRedirect: '/login' 
 }));
 

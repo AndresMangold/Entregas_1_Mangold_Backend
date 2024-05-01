@@ -48,4 +48,4 @@ const inicializeStrategy = () => {
     })
 }
 
-module.exports = inicializeStrategy
+module.exports = inicializeStrategy;
