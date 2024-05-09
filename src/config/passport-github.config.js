@@ -11,7 +11,7 @@ const inicializeStrategy = () => {
         callbackURL
     }, async (_accessToken, _refreshToker, profile, done) => {
         try {
-            console.log('Profile, github: ', profile, profile._json)
+            console.log('profile, github: ', profile, profile._json)
 
             const user = await Users.findOne({ email: profile._json.email })
             if (user) {

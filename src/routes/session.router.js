@@ -90,12 +90,14 @@ router.post('/register', userIsNotLoggedIn, async (req, res) => {
 
 router.get('/profile', userisLoggedIn, async (req, res) => {
     try {
-
+        const user = { ...(req.session.user || req.user._doc) };
+    
         res.render('profile', {
             title: 'My profile',
-            user: req.session.user, 
-            isLoggedIn: true,
-            
+            style: ['styles.css'],
+            user: user, 
+            isLoggedIn: req.isLoggedIn, 
+
         });
     } catch (error) {
         console.error('Error al buscar el usuario en la base de datos:', error);
