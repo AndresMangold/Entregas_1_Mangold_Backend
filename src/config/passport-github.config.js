@@ -1,10 +1,9 @@
 const passport = require('passport');
 const { Strategy } = require('passport-github2');
-const { Users } = require('../dao/models');
 const { clientID, clientSecret, callbackURL } = require('./github.private');
+const Users = require('../dao/models/user.model')
 
-const inicializeStrategy = () => {
-
+const initializeStrategy = () => {
     passport.use('github', new Strategy({
         clientID,
         clientSecret,
@@ -34,18 +33,18 @@ const inicializeStrategy = () => {
         catch (err) {
             done(err)
         }
-    }))
+    }));
 
     passport.serializeUser((user, done) => {
         console.log('Serailized: ', user);
         done(null, user._id);
-    })
+    });
 
     passport.deserializeUser(async (id, done) => {
         console.log('Deserialized: ', id)
         const user = await Users.findById(id);
         done(null, user)
-    })
-}
+    });
+};
 
-module.exports = inicializeStrategy;
+module.exports = initializeStrategy;
