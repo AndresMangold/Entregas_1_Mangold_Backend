@@ -29,21 +29,6 @@ router.get('/register', (_, res) => {
     });
 });
 
-router.get('/profile', userisLoggedIn, async (req, res) => {
-    try {
-        const idFromSession = req.session.user._id;
-        const user = await User.findOne({ _id: idFromSession });
-
-        res.render('profile', {
-            title: 'My profile',
-            style: ['styles.css'],
-            user: user
-        });
-    } catch (error) {
-        console.error('Error al buscar el usuario en la base de datos:', error);
-        res.status(500).send('Error interno del servidor');
-    }
-});
 
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {

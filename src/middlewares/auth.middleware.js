@@ -1,26 +1,25 @@
 module.exports = {
     userisLoggedIn: (req, res, next) => {
-        const isLoggedIn = ![null, undefined].includes(req.session.user);
-        if (!isLoggedIn) {
+        if (req.isAuthenticated()) {
+            return next();
+        } else {
             return res.redirect('/login'); 
         }
-        next();
     },
 
     userIsNotLoggedIn: (req, res, next) => {
-        const isLoggedIn = ![null, undefined].includes(req.session.user);
-        if (isLoggedIn) {
+        if (!req.isAuthenticated()) {
+            return next();
+        } else {
             return res.status(401).json({ error: 'User should not be logged in!' });
         }
-        next();
     },
 
     userIsAdmin: (req, res, next) => {
-        const isLoggedIn = ![null, undefined].includes(req.session.user);
-        const isAdmin = isLoggedIn && req.session.user.role === 'admin';
-        if (!isAdmin) {
+        if (req.isAuthenticated() && req.session.user.role === 'admin') {
+            return next();
+        } else {
             return res.status(403).json({ error: 'Access denied! You should be an Admin' });
         }
-        next();
     }
 };
