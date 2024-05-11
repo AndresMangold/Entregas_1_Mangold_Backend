@@ -5,3 +5,5 @@ package-lock.json
 fileManagers/
 
 githube.private
+
+.env
