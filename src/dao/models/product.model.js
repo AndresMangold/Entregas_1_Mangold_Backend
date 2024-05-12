@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-const collection = 'Products'
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const schema = new mongoose.Schema({
 
@@ -11,12 +10,12 @@ const schema = new mongoose.Schema({
 
     description: {
         type: String,
-        require: true
+        required: true
     },
 
     price: {
         type: Number,
-        require: true,
+        required: true,
         min: 1
     },
 
@@ -28,19 +27,17 @@ const schema = new mongoose.Schema({
     code: {
         type: String,
         unique: true,
-        require: true
-    },
-
-    status: {
-        type: Boolean,
-        enum: [true, false],
-        default: true
+        required: true
     },
 
     stock: {
         type: Number,
-        require: true,
+        required: true,
         min: 0
+    },
+    category: {
+        type: String,
+        required: true
     }
 });
 
@@ -48,4 +45,6 @@ schema.virtual('id').get(function () {
     return this._id.toString()
 });
 
-module.exports = mongoose.model(collection, schema, 'products');
+schema.plugin(mongoosePaginate);
+
+module.exports = mongoose.model('Products', schema, 'products');

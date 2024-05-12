@@ -1,49 +1,15 @@
-const mongoose = require('mongoose');
-const collection = 'Products'
+const mongoose = require('mongoose')
+
 const schema = new mongoose.Schema({
-
-    title: {
+    firstName: String,
+    lastName: String,
+    age: Number,
+    role: String,
+    email: {
         type: String,
-        required: true
+        unique: true
     },
+    password: String,
+})
 
-    description: {
-        type: String,
-        require: true
-    },
-
-    price: {
-        type: Number,
-        require: true,
-        min: 1
-    },
-
-    thumbnail: {
-        type: String,
-        default: 'NoImg'
-    },
-
-    code: {
-        type: String,
-        unique: true,
-        require: true
-    },
-
-    status: {
-        type: Boolean,
-        enum: [true, false],
-        default: true
-    },
-
-    stock: {
-        type: Number,
-        require: true,
-        min: 0
-    }
-});
-
-schema.virtual('id').get(function () {
-    return this._id.toString()
-});
-
-module.exports = mongoose.model(collection, schema, 'products');
+module.exports = mongoose.model('Users', schema, 'users')
