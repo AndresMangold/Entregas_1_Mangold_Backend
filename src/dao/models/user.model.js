@@ -4,12 +4,21 @@ const schema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     age: Number,
-    role: String,
     email: {
         type: String,
-        unique: true
+        unique: true,
     },
-    password: String,
+    password: {
+        type: String,
+    },
+    rol: {
+        type: String,
+        default: 'user'
+    },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Carts'
+    }
 })
 
 module.exports = mongoose.model('Users', schema, 'users')

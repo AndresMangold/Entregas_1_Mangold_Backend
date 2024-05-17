@@ -16,7 +16,7 @@ module.exports = {
     },
 
     userIsAdmin: (req, res, next) => {
-        if (req.isAuthenticated() && req.session.user.role === 'admin') {
+        if (req.isAuthenticated() && req.user.role === 'admin') {
             return next();
         } else {
             return res.status(403).json({ error: 'Access denied! You should be an Admin' });

@@ -1,9 +1,10 @@
 const { Router } = require('express'); 
 const router = Router(); 
 const ProductManager = require('../dao/dbManagers/productManager');
-const { userisLoggedIn } = require('../middlewares/auth.middleware')
+const { userisLoggedIn } = require('../middlewares/auth.middleware');
+const { verifyToken } = require('../utils/jwt');
 
-router.get('/', userisLoggedIn, async (req, res) => {
+router.get('/', userisLoggedIn, verifyToken, async (req, res) => {
     try {
         const page = req.query.page || 1;
         const limit = req.query.limit || 12;
@@ -31,7 +32,7 @@ router.get('/', userisLoggedIn, async (req, res) => {
 });
 
 
-router.post('/:pid', async (req, res) => {
+router.post('/:pid', verifyToken, async (req, res) => {
     try {
         const productId = req.params.pid;
         const cartId = '661eeec55d8db44e2eb4053f'
@@ -43,7 +44,7 @@ router.post('/:pid', async (req, res) => {
     }
 });
 
-router.get('/:pid', userisLoggedIn, async (req, res) => {
+router.get('/:pid', userisLoggedIn, verifyToken, async (req, res) => {
     try {
 
         const productId = req.params.pid; 
@@ -74,7 +75,7 @@ router.get('/:pid', userisLoggedIn, async (req, res) => {
 });
 
 
-router.put('/:pid', async (req, res) => {
+router.put('/:pid', verifyToken, async (req, res) => {
     try {
         const productId = req.params.pid; 
         const productManager = req.app.get('productManager');

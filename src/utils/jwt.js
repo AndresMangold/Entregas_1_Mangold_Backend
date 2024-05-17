@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-const PRIVATE_KEY = 'Andres12345CoderH'
+const PRIVATE_KEY = process.env.JWT_SECRET;
 
 const generateToken = user => {
     const token = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '24h' })
@@ -8,20 +9,25 @@ const generateToken = user => {
 }
 
 const verifyToken = (req, res, next) => {
-    const authHeader = req.headers.authorization
-    if (!authHeader) {
-        return res.status(401).json({ error: 'Not authenticated!' })
+    const accessToken = req.cookies.accessToken;
+    if (!accessToken) {
+        req.user = null;
+        return next();
     }
 
-    const [, token] = authHeader.split(' ')
-    jwt.verify(token, PRIVATE_KEY, (err, signedPayload) => {
+    jwt.verify(accessToken, PRIVATE_KEY, (err, decoded) => {
         if (err) {
-            return res.status(403).json({ error: 'Invalid access token!' })
+            return res.status(403).json({ error: 'Invalid access token!' });
         }
 
-        req.authUser = signedPayload.user
-        next()
-    })
-}
+        req.user = decoded.user;
 
-module.exports = { generateToken, verifyToken, secret: PRIVATE_KEY }
+        if (decoded.user && decoded.user.cart) {
+            req.user.cartId = decoded.user.cart._id;
+        }
+
+        next();
+    });
+};;
+
+module.exports = { generateToken, verifyToken, secret: PRIVATE_KEY };
