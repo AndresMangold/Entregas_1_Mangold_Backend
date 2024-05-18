@@ -1,20 +1,19 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const schema = new mongoose.Schema({
-    products: [{
-        product: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Products'
-        },
-        quantity: {
-            type: Number,
-            default: 0
+const cartSchema = new Schema({
+    products: [
+        {
+            product: { type: Schema.Types.ObjectId, ref: 'Product' },
+            quantity: { type: Number, default: 1 }
         }
-    }]
+    ]
+}, { timestamps: true });
+
+cartSchema.virtual('id').get(function () {
+    return this._id.toString();
 });
 
-schema.virtual('id').get(function () {
-    return this._id.toString()
-});
+const Carts = mongoose.model('Cart', cartSchema);
 
-module.exports = mongoose.model('Carts', schema, 'carts');
+module.exports = Carts;

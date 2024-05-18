@@ -12,7 +12,13 @@ router.get('/', userisLoggedIn, async (req, res) => {
             quantity: c.products.length
         }));
 
-        res.status(200).json(cartsData); 
+        res.status(200).render('carts', {
+            carts: cartsData,
+            titlePage: 'Carts',
+            style: ['styles.css'],
+            isLoggedIn: req.session.user !== undefined || req.user !== undefined, 
+        }); 
+
     } catch (err) {
         res.status(500).json({ Error: err.message }); 
     }
@@ -35,7 +41,13 @@ router.get('/:cid', userisLoggedIn, async (req, res) => {
             }))
         };
 
-        res.status(200).json(cartData);
+
+        res.status(200).render('cart', {
+            cart: cartData,
+            titlePage: 'Carrito',
+            style: ['styles.css'],
+            isLoggedIn: req.session.user !== undefined || req.user !== undefined,
+        });
     } catch (err) {
         res.status(500).json({ Error: err.message });
     }
@@ -57,6 +69,9 @@ router.post('/:cid/product/:pid', userisLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid;
         const productId = req.params.pid;
+
+        console.log(`Adding product ${productId} to cart ${cartId}`); 
+
         const cartManager = req.app.get('cartManager');
         const updatedCart = await cartManager.addProductToCart(productId, cartId);
         res.status(200).json(updatedCart);

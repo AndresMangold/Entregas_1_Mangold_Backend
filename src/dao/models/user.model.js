@@ -1,6 +1,7 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { Schema } = mongoose; // Importar Schema desde mongoose
 
-const schema = new mongoose.Schema({
+const userSchema = new Schema({
     firstName: String,
     lastName: String,
     age: Number,
@@ -11,14 +12,13 @@ const schema = new mongoose.Schema({
     password: {
         type: String,
     },
-    rol: {
+    role: { 
         type: String,
-        default: 'user'
+        default: 'user', 
     },
-    cart: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Carts'
-    }
-})
+    cartId: { 
+        type: Schema.Types.ObjectId, ref: 'Cart', 
+    },
+});
 
-module.exports = mongoose.model('Users', schema, 'users')
+module.exports = mongoose.model('User', userSchema, 'users');

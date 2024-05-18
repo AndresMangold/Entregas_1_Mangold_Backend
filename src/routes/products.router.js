@@ -35,12 +35,18 @@ router.get('/', userisLoggedIn, verifyToken, async (req, res) => {
 router.post('/:pid', verifyToken, async (req, res) => {
     try {
         const productId = req.params.pid;
-        const cartId = '661eeec55d8db44e2eb4053f'
+        const user = req.user; // Obtener el usuario autenticado
+        const cartId = user.cartId; // Obtener el ID del carrito del usuario
+
+        if (!cartId) {
+            return res.status(400).json({ error: 'No se encontró el carrito para el usuario.' });
+        }
+
         const cartManager = req.app.get('cartManager');
-        await cartManager.addProductToCart(productId, cartId)
+        await cartManager.addProductToCart(productId, cartId);
         res.status(301).redirect('/api/products');
     } catch (err) {
-        res.status(500).json({ Error: err.message })
+        res.status(500).json({ error: err.message });
     }
 });
 

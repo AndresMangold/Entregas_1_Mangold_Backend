@@ -51,6 +51,9 @@ router.post('/login', userIsNotLoggedIn, (req, res, next) => {
                     return res.status(500).json({ error: 'Error interno del servidor' });
                 }
 
+                console.log("User logged in:");
+                console.log(user); 
+
                 const accessToken = generateToken(user);
                 res.cookie('accessToken', accessToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
                 res.redirect('/api/products');
@@ -61,6 +64,8 @@ router.post('/login', userIsNotLoggedIn, (req, res, next) => {
         }
     })(req, res, next);
 });
+
+
 
 router.post('/register', userIsNotLoggedIn, (req, res, next) => {
     passport.authenticate('register', async (err, user, info) => {

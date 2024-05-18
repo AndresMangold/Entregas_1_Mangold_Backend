@@ -1,7 +1,8 @@
-const passport = require("passport");
+const passport = require('passport');
 const { Strategy } = require('passport-local');
-const User = require('../dao/models/user.model');
+const User = require('../dao/models/user.model'); 
 const { isValidPassword, hashPassword } = require("../utils/hashing");
+const Cart = require('../dao/models/cart.model');
 
 const initializePassport = () => {
     passport.use('login', new Strategy(
@@ -11,7 +12,7 @@ const initializePassport = () => {
         },
         async function(email, password, done) {
             try {
-                const user = await User.findOne({ email });
+                const user = await User.findOne({ email }).populate('cartId');
                 if (!user) {
                     return done(null, false, { message: 'Email o contraseña incorrectas.' });
                 }
@@ -31,16 +32,20 @@ const initializePassport = () => {
             const { firstName, lastName, email, age } = req.body;
             try {
                 const user = await User.findOne({ email: username });
-                if (user || username === 'adminCoder@coder.com') {
+                if (user) {
                     console.log('El usuario ya existe.');
                     return done(null, false);
                 } else {
+                    const newCart = await Cart.create({ products: [] });
+    
                     const newUser = {
                         firstName,
                         lastName,
                         email,
                         age: +age,
-                        password: hashPassword(password) 
+                        password: hashPassword(password),
+                        role: 'user',
+                        cartId: newCart._id 
                     }
                     const result = await User.create(newUser);
                     return done(null, result);
@@ -50,15 +55,17 @@ const initializePassport = () => {
             }
         }
     ));
+    
+    
 
-    passport.serializeUser(function(user, done) {
+    passport.serializeUser((user, done) => {
         done(null, user._id);
     });
 
-    passport.deserializeUser(async function(id, done) {
+    passport.deserializeUser(async (id, done) => {
         try {
-            const user = await User.findById(id);
-            done(null, user)
+            const user = await User.findById(id).populate('cartId');
+            done(null, user);
         } catch (err) {
             done(err);
         }

@@ -1,4 +1,4 @@
-const { Router } = require('express'); 
+const { Router } = require('express');
 const router = Router();
 const { userIsAdmin } = require('../middlewares/auth.middleware');
 
@@ -29,6 +29,5 @@ router.use((err, req, res, next) => {
         next(err);
     }
 });
-
 
 module.exports = router;

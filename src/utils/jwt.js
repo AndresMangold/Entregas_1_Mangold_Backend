@@ -4,8 +4,8 @@ require('dotenv').config();
 const PRIVATE_KEY = process.env.JWT_SECRET;
 
 const generateToken = user => {
-    const token = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '24h' })
-    return token
+    const token = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '24h' });
+    return token;
 }
 
 const verifyToken = (req, res, next) => {
@@ -28,6 +28,6 @@ const verifyToken = (req, res, next) => {
 
         next();
     });
-};;
+};
 
 module.exports = { generateToken, verifyToken, secret: PRIVATE_KEY };

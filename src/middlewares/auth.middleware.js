@@ -3,7 +3,7 @@ module.exports = {
         if (req.isAuthenticated()) {
             return next();
         } else {
-            return res.redirect('/login'); 
+            return res.redirect('/login');
         }
     },
 
@@ -16,7 +16,10 @@ module.exports = {
     },
 
     userIsAdmin: (req, res, next) => {
-        if (req.isAuthenticated() && req.user.role === 'admin') {
+        console.log('Authenticated:', req.isAuthenticated());
+        console.log('User:', req.user);
+        
+        if (req.isAuthenticated() && req.user && req.user.role === 'admin') {
             return next();
         } else {
             return res.status(403).json({ error: 'Access denied! You should be an Admin' });
