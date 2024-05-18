@@ -59,21 +59,20 @@ class CartManager {
     
     async getCartById(cartId) {
         try {
-            let cart = await Carts.findOne({ _id: cartId }).populate('products.product');
-
+            const cart = await Carts.findOne({ _id: cartId }).populate('products.product');
+    
             if (!cart) {
                 throw new Error('El carrito no existe');
             }
-            
+    
             cart.products = cart.products.filter(item => item.product !== null);
-            cart = await cart.save();
-
+    
             return cart;
         } catch (err) {
-            console.error(err);
-            throw new Error('Hubo un error al obtener el ID del carrito.');
+            throw err;
         }
     }
+    
 
     async addProductToCart(productId, cartId) {
         try {

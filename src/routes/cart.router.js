@@ -1,26 +1,27 @@
 const { Router } = require('express');
 const router = Router();
 const { userisLoggedIn } = require('../middlewares/auth.middleware');
+const User = require('../dao/models/user.model');
 
 router.get('/', userisLoggedIn, async (req, res) => {
     try {
-        const cartManager = req.app.get('cartManager');
-        const carts = await cartManager.getCarts(); 
-
-        const cartsData = carts.map(c => ({
-            id: c.id,
-            quantity: c.products.length
-        }));
-
+        const userId = req.user._id;
+        const user = await User.findById(userId).populate('cartId');
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+        const cart = user.cartId;
+        if (!cart) {
+            return res.status(404).json({ error: 'El usuario no tiene un carrito asociado.' });
+        }
         res.status(200).render('carts', {
-            carts: cartsData,
-            titlePage: 'Carts',
+            cart: cart,
+            titlePage: 'Carrito',
             style: ['styles.css'],
-            isLoggedIn: req.session.user !== undefined || req.user !== undefined, 
-        }); 
-
+            isLoggedIn: req.session.user !== undefined || req.user !== undefined,
+        });
     } catch (err) {
-        res.status(500).json({ Error: err.message }); 
+        res.status(500).json({ Error: err.message });
     }
 });
 
@@ -31,6 +32,8 @@ router.get('/:cid', userisLoggedIn, async (req, res) => {
         const cartManager = req.app.get('cartManager');
         const cart = await cartManager.getCartById(cartId);
 
+        console.log('Datos del carrito:', cart);
+        
         const cartData = {
             id: cart.id,
             products: cart.products.map(p => ({
@@ -40,8 +43,6 @@ router.get('/:cid', userisLoggedIn, async (req, res) => {
                 quantity: p.quantity
             }))
         };
-
-
         res.status(200).render('cart', {
             cart: cartData,
             titlePage: 'Carrito',
@@ -74,7 +75,14 @@ router.post('/:cid/product/:pid', userisLoggedIn, async (req, res) => {
 
         const cartManager = req.app.get('cartManager');
         const updatedCart = await cartManager.addProductToCart(productId, cartId);
-        res.status(200).json(updatedCart);
+
+        res.status(200).render('cart', {
+            cart: updatedCart, 
+            titlePage: 'Carrito',
+            style: ['styles.css'],
+            isLoggedIn: req.session.user !== undefined || req.user !== undefined,
+        });
+
     } catch (error) {
         console.error(error);
         res.status(500).json({ Error: error.message });
