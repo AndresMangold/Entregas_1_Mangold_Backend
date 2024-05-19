@@ -1,7 +1,7 @@
 const { Router } = require('express'); 
 const router = Router(); 
 const ProductManager = require('../dao/dbManagers/productManager');
-const { userisLoggedIn } = require('../middlewares/auth.middleware');
+const { userisLoggedIn, userIsAdmin } = require('../middlewares/auth.middleware');
 const { verifyToken } = require('../utils/jwt');
 
 router.get('/', userisLoggedIn, verifyToken, async (req, res) => {
@@ -31,12 +31,41 @@ router.get('/', userisLoggedIn, verifyToken, async (req, res) => {
     }
 });
 
+router.get('/:pid', userisLoggedIn, verifyToken,async (req, res) => {
+    try {
+
+        const productId = req.params.pid; 
+        const productManager = req.app.get('productManager');
+        const product = await productManager.getProductById(productId); 
+
+        const productData = {
+            title: product.title,
+            thumbnail: product.thumbnail,
+            description: product.description,
+            price: product.price,
+            stock: product.stock,
+            code: product.code,
+            id: product.id
+        };
+
+        res.status(200).render('product', {
+            product: [productData],
+            titlePage: `Productos | ${product.title}`,
+            style: ['styles.css'],
+            isLoggedIn: req.session.user !== undefined || req.user !== undefined,
+        });
+
+
+    } catch (err) {
+        res.status(500).json({ Error: err.message }); 
+    }
+});
 
 router.post('/:pid', verifyToken, async (req, res) => {
     try {
         const productId = req.params.pid;
-        const user = req.user; // Obtener el usuario autenticado
-        const cartId = user.cartId; // Obtener el ID del carrito del usuario
+        const user = req.user; 
+        const cartId = user.cartId; 
 
         if (!cartId) {
             return res.status(400).json({ error: 'No se encontró el carrito para el usuario.' });
