@@ -55,7 +55,7 @@ router.post('/login', userIsNotLoggedIn, (req, res, next) => {
                 console.log(user); 
 
                 const accessToken = generateToken(user);
-                res.cookie('accessToken', accessToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+                res.cookie('accessToken', accessToken, { maxAge: 24 * 60 * 60 * 100000, httpOnly: true });
                 res.redirect('/api/products');
             });
         } catch (err) {

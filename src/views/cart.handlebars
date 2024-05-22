@@ -4,13 +4,14 @@
         {{#each cart.products}}
         <li>
             <div class="margin">
-                <p>Nombre de Producto: {{this.product.title}}</p> 
-                <p>ID Producto: {{this.product._id}}</p> 
-                <p>Código de Producto: {{this.product.code}}</p> 
+                <p>Nombre de Producto: {{this.title}}</p> 
+                <p>ID Producto: {{this._id}}</p> 
                 <p>Cantidad en Carrito: {{this.quantity}}</p>
             </div>
         </li>
         {{/each}}
     </ul>
-    <a href="/api/cart" class="product-link">Volver </a>
+    <a href="/api/products" class="product-link">Volver</a>
 </div>
+
+

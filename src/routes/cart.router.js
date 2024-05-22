@@ -14,8 +14,10 @@ router.get('/', userisLoggedIn, async (req, res) => {
         if (!cart) {
             return res.status(404).json({ error: 'El usuario no tiene un carrito asociado.' });
         }
-        res.status(200).render('carts', {
-            cart: cart,
+        console.log('este es el cart', cart);
+        res.status(200).render('cart', {
+            // cart: cart,
+            cart: JSON.parse(JSON.stringify(cart)),
             titlePage: 'Carrito',
             style: ['styles.css'],
             isLoggedIn: req.session.user !== undefined || req.user !== undefined,
@@ -30,16 +32,16 @@ router.get('/:cid', userisLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid;
         const cartManager = req.app.get('cartManager');
-        const cart = await cartManager.getCartById(cartId);
-
-        console.log('Datos del carrito:', cart);
+        await cartManager.getCartById(cartId).populate('products.product');
         
         const cartData = {
             id: cart.id,
-            products: cart.products.map(p => ({
-                productId: p.product.id,
-                title: p.product.title,
-                code: p.product.code,
+            product: cart.products.map(p => ({
+                product: {
+                    title: p.product.title,
+                    productId: p.product.id,
+                    code: p.product.code,
+                },
                 quantity: p.quantity
             }))
         };
@@ -53,6 +55,7 @@ router.get('/:cid', userisLoggedIn, async (req, res) => {
         res.status(500).json({ Error: err.message });
     }
 });
+
 
 
 router.post('/', userisLoggedIn, async (req, res) => {
@@ -94,13 +97,14 @@ router.delete('/:cid/product/:pid', userisLoggedIn, async (req, res) => {
     try {
         const cartId = req.params.cid;
         const productId = req.params.pid;
-        const cartManager = req.app.get('cartManager');
         await cartManager.deleteProductFromCart(productId, cartId);
         res.status(200).json({ message: `Producto ${productId} eliminado del carrito ${cartId} de manera correcta.` });
     } catch (err) {
-        res.status(500).json({ Error: err.message });
+        console.error('Error en la ruta DELETE:', err);
+        res.status(500).json({ Error: err.message, stack: err.stack });
     }
 });
+
 
 
 

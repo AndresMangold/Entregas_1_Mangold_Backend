@@ -58,20 +58,20 @@ class CartManager {
 
     
     async getCartById(cartId) {
-        try {
-            const cart = await Carts.findOne({ _id: cartId }).populate('products.product');
-    
-            if (!cart) {
-                throw new Error('El carrito no existe');
-            }
-    
-            cart.products = cart.products.filter(item => item.product !== null);
-    
-            return cart;
-        } catch (err) {
-            throw err;
+    try {
+        const cart = await Carts.findById(cartId).populate('products.product');
+        
+        if (!cart) {
+            throw new Error('El carrito no existe');
         }
+
+        cart.products = cart.products.filter(item => item.product !== null);
+
+        return cart;
+    } catch (err) {
+        throw err;
     }
+}
     
 
     async addProductToCart(productId, cartId) {
@@ -86,7 +86,7 @@ class CartManager {
             if (existingProductIndex !== -1) {
                 cart.products[existingProductIndex].quantity += 1;
             } else {
-                cart.products.push({ product: productId, quantity: 1 });
+                cart.products.push({ product: productId, title: product.title, quantity: 1 });
             }
     
             await cart.save();
@@ -101,13 +101,26 @@ class CartManager {
 
     async deleteProductFromCart(productId, cartId) {
         try {
-
             const product = await this.verifyProductExists(productId);
-            console.log(product);
+            if (!product) {
+                throw new Error('El producto no existe.');
+            }
+            console.log('Producto encontrado:', product);
 
             const cart = await this.verifyCartExists(cartId);
+            if (!cart) {
+                throw new Error('El carrito no existe.');
+            }
+            console.log('Carrito encontrado:', cart);
 
-            await cart.updateOne({ $pull: { products: { product: productId } } });
+            const updateResult = await Cart.updateOne(
+                { _id: cartId },
+                { $pull: { products: { product: productId } } }
+            );
+
+            if (updateResult.nModified === 0) {
+                throw new Error('No se pudo eliminar el producto del carrito. Verifique que el producto exista en el carrito.');
+            }
 
             console.log(`Se eliminó el producto ${productId} del carrito ${cartId}`);
         } catch (error) {
@@ -115,6 +128,7 @@ class CartManager {
             throw new Error('Error al eliminar el producto del carrito');
         }
     }
+    
 
     async updateCart(cartId, products) {
         try {
