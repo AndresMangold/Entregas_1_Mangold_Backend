@@ -38,6 +38,7 @@ router.get('/:pid', userisLoggedIn, verifyToken,async (req, res) => {
         const productManager = req.app.get('productManager');
         const product = await productManager.getProductById(productId); 
 
+        const cartId = req.user.cartId._id;
         const productData = {
             title: product.title,
             thumbnail: product.thumbnail,
@@ -45,7 +46,8 @@ router.get('/:pid', userisLoggedIn, verifyToken,async (req, res) => {
             price: product.price,
             stock: product.stock,
             code: product.code,
-            id: product.id
+            id: product.id,
+            cartId
         };
 
         res.status(200).render('product', {
@@ -64,7 +66,8 @@ router.get('/:pid', userisLoggedIn, verifyToken,async (req, res) => {
 router.post('/:pid', verifyToken, async (req, res) => {
     try {
         const productId = req.params.pid;
-        const user = req.user; 
+        const user = req.user;
+        console.log('usuario cargado', req.user) 
         const cartId = user.cartId; 
 
         if (!cartId) {

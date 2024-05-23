@@ -4,6 +4,7 @@ const { userIsNotLoggedIn, userisLoggedIn } = require('../middlewares/auth.middl
 const passport = require('passport');
 const initializePassport = require('../config/passport.config');
 const { generateToken } = require('../utils/jwt');
+const { DEFAULT_MAX_AGE } = require('../constants');
 
 const router = Router();
 
@@ -49,13 +50,10 @@ router.post('/login', userIsNotLoggedIn, (req, res, next) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ error: 'Error interno del servidor' });
-                }
-
-                console.log("User logged in:");
-                console.log(user); 
+                } 
 
                 const accessToken = generateToken(user);
-                res.cookie('accessToken', accessToken, { maxAge: 24 * 60 * 60 * 100000, httpOnly: true });
+                res.cookie('accessToken', accessToken, { maxAge: DEFAULT_MAX_AGE, httpOnly: true });
                 res.redirect('/api/products');
             });
         } catch (err) {
@@ -85,7 +83,7 @@ router.post('/register', userIsNotLoggedIn, (req, res, next) => {
                 }
 
                 const accessToken = generateToken(user);
-                res.cookie('accessToken', accessToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
+                res.cookie('accessToken', accessToken, { maxAge: DEFAULT_MAX_AGE, httpOnly: true });
                 res.redirect('/api/products');
             });
         } catch (err) {
@@ -128,6 +126,6 @@ router.get('/github', passport.authenticate('github', { scope: ['user:email'] })
 router.get('/sessions/githubcallback', passport.authenticate('github', {
     successRedirect: '/api/products',
     failureRedirect: '/login'
-}));
+})); 
 
 module.exports = router;

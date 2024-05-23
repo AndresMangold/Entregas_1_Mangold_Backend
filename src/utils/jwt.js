@@ -9,6 +9,11 @@ const generateToken = user => {
 }
 
 const verifyToken = (req, res, next) => {
+
+    if (req.session !== undefined) {
+        return next();
+    }
+
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
         req.user = null;
@@ -21,6 +26,8 @@ const verifyToken = (req, res, next) => {
         }
 
         req.user = decoded.user;
+
+        console.log('decoded user', decoded.user)
 
         if (decoded.user && decoded.user.cart) {
             req.user.cartId = decoded.user.cart._id;

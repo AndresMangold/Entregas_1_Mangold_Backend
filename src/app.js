@@ -6,6 +6,7 @@ const MongoStore = require('connect-mongo');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
+const { DEFAULT_MAX_AGE } = require('./constants')
 
 const ProductManager = require('./dao/dbManagers/productManager');
 const CartManager = require('./dao/dbManagers/CartManager');
@@ -37,11 +38,12 @@ app.use(express.static('public'));
 app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URL || "mongodb+srv://andresmangold:andresPass@cluster0.hrz9nqj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-        ttl: 15
+        ttl: 60 * 60 //In seconds
     }),
     secret: process.env.SESSION_SECRET || "adminCod3r123",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    maxAge: DEFAULT_MAX_AGE
 }));
 
 initializePassport();
@@ -49,11 +51,19 @@ initializePassportGitHub();
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+  });
+
 app.use('/api', sessionRouter);
 app.use('/api/createProduct', createProductRouter);
 app.use('/api/products', productsRouter); 
 app.use('/api/cart', cartRouter);
 app.use('/', require('./routes/views.router'));
+app.use((req, res) => {
+    res.status(404).json({ error: 'Not Found' });
+  });
 
 app.set('productManager', new ProductManager());
 app.set('cartManager', new CartManager());

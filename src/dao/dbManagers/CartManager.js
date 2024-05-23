@@ -13,7 +13,6 @@ class CartManager {
 
     async verifyCartExists(cartId) {
         try {
-            console.log(`Verifying cart exists: ${cartId}`); 
     
             const cart = await Carts.findById(cartId);
             if (!cart) {
@@ -77,10 +76,9 @@ class CartManager {
     async addProductToCart(productId, cartId) {
         try {
             const product = await this.verifyProductExists(productId);
-            console.log(`Producto verificado: ${product}`);
+            console.log('cart id', cartId)
     
             const cart = await this.verifyCartExists(cartId);
-            console.log(`Carrito verificado: ${cart}`);
     
             const existingProductIndex = cart.products.findIndex(p => p.product.equals(productId));
             if (existingProductIndex !== -1) {
